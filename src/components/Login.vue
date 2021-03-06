@@ -46,7 +46,7 @@
                   <q-btn label="Entrar" type="submit" color="primary"/>
                 </div>
                 <div class="row justify-center">
-                  <q-btn @click="recuperarSenha()" type="a" flat label="Esqueci a Senha"/>
+                  <q-btn @click="recuperarSenha()" type="a" flat label="Esqueci a Senha noemi"/>
                 </div>
               </div>
             </q-form>
