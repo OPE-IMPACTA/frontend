@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import userList  from 'components/userManagement/userList.vue'
+import userList from 'components/UserScreen/userList.vue'
 import { defineComponent } from '@vue/composition-api'
 
 export default defineComponent({

@@ -1,7 +1,22 @@
-module.exports = {
-    NEW: 'new',
-    PENDING: 'pending',
-    RUNNING: 'running',
-    SUCCESS: 'success',
-    ERROR: 'error'
+exports.STATUS = {
+    READY: {
+        value: 'ready',
+        label: 'Pronto'
+    },
+    PENDING: {
+        value: 'pending',
+        label: 'Pendente'
+    },
+    RUNNING: {
+        value: 'running',
+        label: 'Executando'
+    },
+    SUCCESS: {
+        value: 'success',
+        label: 'Sucesso'
+    },
+    ERROR: {
+        value: 'error',
+        label: 'Erro'
+    }
 }

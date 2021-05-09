@@ -15,7 +15,7 @@
       <div class="col-lg-1 col-md-1"></div>
 
       <div class="col-lg-5 col-sm-12 col-md-5">
-        <q-field label="Que tipo de operação você quer realizar?" stack-label>
+        <q-field label="Informe o parâmetro principal?" stack-label>
           <q-select
               @input="onChooseOperation"
               type="radio"
@@ -27,11 +27,11 @@
     </div>
 
     <ActionClickComponent :alias="valueOperation"></ActionClickComponent>
-    <ActionWaitComponent :alias="valueOperation"></ActionWaitComponent>
     <ActionFillComponent :alias="valueOperation"></ActionFillComponent>
     <ActionSubmitComponent :alias="valueOperation"></ActionSubmitComponent>
+    <ActionAssertComponent :alias="valueOperation"></ActionAssertComponent>
 
-    <q-btn label="Adicionar ação" @click="addOperation" type="button" class="q-ma-sm" color="primary"/>
+    <q-btn rounded label="Adicionar ação" @click="addOperation" type="button" icon="fas fa-plus" class="q-ma-sm" color="primary"/>
   </div>
 </template>
 
@@ -53,15 +53,20 @@ export default {
         { label: 'Class', value: 'class' },
         { label: 'Name', value: 'name' },
         { label: 'Link', value: 'link' },
+        { label: 'Text', value: 'text' },
       ]
     }
+  },
+  destroyed () {
+    this.$channelEvents.$off(this.$constantsEvents.SEND_COMMAND_ACTION);
+    this.$channelEvents.$off(this.$constantsEvents.ADD_OPERATION_QUEUE);
   },
   methods: {
     onChooseOperation() {
       this.valueOperation = this.operation.value;
     },
 
-    addOperation() {
+    addOperation () {
       this.$channelEvents.$emit(this.$constantsEvents.SEND_COMMAND_ACTION, this.typeField);
     }
   }

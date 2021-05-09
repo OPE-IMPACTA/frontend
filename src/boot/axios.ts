@@ -36,17 +36,18 @@ export default boot(({ Vue }) => {
     return Promise.reject(error);
   });
 
-  Vue.prototype.$axios.interceptors.response.use(function (response) {
+  Vue.prototype.$axios.interceptors.response.use(function (response: any) {
 
     Loading.hide();
     return response;
-  }, function (error) {
+  }, function (error: any) {
 
-    if(error.response.status === 401) {
+    if(error.response.status === 401 && error.response.config.url !== 'auth/login') {
       localStorage.setItem('user', '');
       localStorage.setItem('token', '');
-
       axios.defaults.headers.common['Authorization'] = '';
+
+      window.location.href = '/';
     }
 
     Loading.hide();

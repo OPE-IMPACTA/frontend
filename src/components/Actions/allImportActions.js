@@ -1,8 +1,8 @@
 const files = [
     'click',
     'fill',
-    'wait',
     'submit',
+    'assert',
 ];
 
 module.exports = () => {

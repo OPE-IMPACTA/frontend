@@ -103,15 +103,31 @@ export default defineComponent({
       }, 3000)
     },
 
-    resetPassword () {
-      this.$axios.post('auth/reset_password/'+this.token,
+    async getLogin(email, password) {
+      return await this.$axios.post('auth/login',
+        {
+          email: email,
+          password: password
+        }
+      );
+    },
+
+    async resetPassword () {
+      this.$axios.post(`auth/reset_password/${this.token}`,
         {
             password: this.password,
             confirmPassword: this.confirmPassword
           }
-        ).then((response) => {
-          let emailUser = response.data.email;
-          this.$router.push({ name: 'login', params: { email: emailUser, password: this.password} })
+        ).then(async (response) => {
+          let emailUser = await this.getLogin(response.data.email, this.password);
+          let userJson = JSON.stringify(response.data);
+
+          Loading.hide();
+          this.$axios.defaults.headers.common['Authorization'] = `Bearer ${emailUser.headers.authorization}`;
+          localStorage.setItem('token', emailUser.headers.authorization);
+          localStorage.setItem('user', userJson);
+          await this.$router.push({path: '/home'});
+
           this.$swal({
             title:'Pronto!',
             text: 'Senha resetada com sucesso.',

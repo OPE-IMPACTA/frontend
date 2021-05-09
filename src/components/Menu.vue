@@ -11,6 +11,7 @@
     >
       Navegação
     </q-item-label>
+
     <q-item
       to="/home"
       exact
@@ -28,42 +29,21 @@
       </q-item-section>
     </q-item>
 
-<!--    expansive tests -->
-    <q-expansion-item
-      icon="far fa-chart-bar"
+    <q-item
       class="q-ma-sm navigation-item"
-      label="Gerenciar Testes"
+      to="/testes/gerenciar"
+      active-class="tab-active"
+      clickable
     >
-      <q-item
-        class="q-ml-xl"
-        to="/testes/gerenciar"
-        active-class="tab-active"
-        clickable
-      >
-        <q-item-section avatar>
-          <i class="fas fa-list-ul"></i>
-        </q-item-section>
+      <q-item-section avatar>
+        <i class="far fa-chart-bar"></i>
+      </q-item-section>
 
-        <q-item-section>
-          <q-item-label>Lista</q-item-label>
-        </q-item-section>
-      </q-item>
+      <q-item-section>
+        <q-item-label>Gerenciar Testes</q-item-label>
+      </q-item-section>
+    </q-item>
 
-      <q-item
-        class="q-ml-xl"
-        clickable
-        active-class="tab-active"
-        to="/testes/cadastrar"
-      >
-        <q-item-section avatar>
-          <q-icon name="add" />
-        </q-item-section>
-
-        <q-item-section>
-          Cadastrar
-        </q-item-section>
-      </q-item>
-    </q-expansion-item>
 
     <q-item
       class="q-ma-sm navigation-item"
@@ -80,22 +60,44 @@
       </q-item-section>
     </q-item>
 
-    <q-item
-      to="/ReportTests"
-      exact
-      active-class="tab-active"
+    <q-expansion-item
+      icon="fas fa-clipboard-list fa-2x"
       class="q-ma-sm navigation-item"
-      clickable
-      v-ripple
+      label="Gerenciar Relatórios"
     >
-      <q-item-section avatar>
-        <i class="fas fa-clipboard-list fa-2x"></i>
-      </q-item-section>
 
-      <q-item-section>
-        Relatório
-      </q-item-section>
-    </q-item>
+      <q-item
+        class="q-ml-xl"
+        clickable
+        active-class="tab-active"
+        to="/relatorios/historicos"
+      >
+        <q-item-section avatar>
+          <q-icon name="content_paste" />
+        </q-item-section>
+
+        <q-item-section>
+          Relatórios
+        </q-item-section>
+      </q-item>
+
+      <q-item
+        class="q-ml-xl"
+        clickable
+        active-class="tab-active"
+        to="/relatorios/graficos"
+      >
+        <q-item-section avatar>
+          <q-icon name="stacked_bar_chart" />
+        </q-item-section>
+
+        <q-item-section>
+          Gráficos
+        </q-item-section>
+      </q-item>
+
+    </q-expansion-item>
+
   </q-list>
 </template>
 

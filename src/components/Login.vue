@@ -46,7 +46,7 @@
                   <q-btn label="Entrar" type="submit" color="primary"/>
                 </div>
                 <div class="row justify-center">
-                  <q-btn @click="recuperarSenha()" type="a" flat label="Esqueci a Senha noemi 22222"/>
+                  <q-btn @click="recuperarSenha()" type="a" flat label="Esqueci a Senha"/>
                 </div>
               </div>
             </q-form>
@@ -57,10 +57,7 @@
   </q-layout>
 </template>
 
-<script type="text/javascript"></script>
 <script>
-
-
 import {Loading, QSpinnerPie} from "quasar";
 
 export default {
@@ -77,18 +74,7 @@ export default {
       })
     },
     onSubmit() {
-      Loading.show({
-        spinner: QSpinnerPie,
-        spinnerColor: 'yellow',
-        message: 'Aguarde, conectando ...',
-        delay: 400
-        // other props
-      })
-
-      this.timer = setTimeout(() => {
-        this.getLogin()
-        this.timer = void 0
-      }, 3000)
+      this.getLogin()
     },
 
     onReset() {
@@ -108,14 +94,16 @@ export default {
         }
       ).then((response) => {
         let userJson = JSON.stringify(response.data)
-        Loading.hide()
+
         this.$axios.defaults.headers.common['Authorization'] = `Bearer ${response.headers.authorization}`
+
         localStorage.setItem('token', response.headers.authorization)
         localStorage.setItem('user', userJson)
+
         this.$router.push({path: '/home'})
       }).catch((e) => {
         this.$q.notify({
-          message: 'Login Inválido',
+          message: e.response.data.erro,
           position: 'top',
           color: 'negative',
           icon: 'warning'
@@ -146,25 +134,21 @@ export default {
               email: email
             }
           ).then(response => {
-              if (response.status !== 200) {
-                throw new Error(response.statusText)
-              }
+              this.$swal({
+                title:'Pronto, tudo certo!',
+                text: 'Um email foi enviado para redefinição de senha.',
+                icon: 'success'
+              })
             })
             .catch(error => {
-              this.$swal.showValidationMessage(
-                `Digite um email válido`
-              )
+              this.$swal({
+                title:'Uh-oh',
+                text: error.response.data.errors[0].msg,
+                icon: 'error'
+              })
             })
         },
         allowOutsideClick: () => !this.$swal.isLoading()
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.$swal({
-            title:'Pronto, tudo certo!',
-            text: 'Um email foi enviado para redefinição de senha.',
-            icon: 'success'
-          })
-        }
       })
     }
   },

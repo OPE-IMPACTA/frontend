@@ -13,7 +13,7 @@
         <q-toolbar-title>
 
         </q-toolbar-title>
-        <q-toolbar-title v-if="isLogin">Bem-vindo (a) {{username}}!</q-toolbar-title>
+        <q-toolbar-title v-if="isLogin">Bem-vindo (a) {{this.username}}!</q-toolbar-title>
 
         <div
           :class="$q.dark.isActive ? 'dark_gradient' : 'normal_gradient'"
@@ -64,7 +64,7 @@ import {
 } from 'quasar'
 
 import { defineComponent, ref } from '@vue/composition-api'
-import MenuLateral from "components/MenuLateral.vue"
+import MenuLateral from "components/Menu.vue"
 
 export default defineComponent({
   name: 'MainLayout',
@@ -81,7 +81,7 @@ export default defineComponent({
     }
   },
 
-  beforeCreate() {
+  created() {
     this.user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : '';
     this.username = this.user.name;
   },
@@ -99,6 +99,8 @@ export default defineComponent({
         this.$axios.defaults.headers.common['Authorization'] = '';
         this.leftDrawerOpen = false;
         this.$router.push({ name: 'login' });
+      }).catch((er) =>{
+        console.log(er)
       });
     }
   }

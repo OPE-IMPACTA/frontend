@@ -1,11 +1,11 @@
 <template>
   <div class="el-width" v-if="alias == aliasAction">
     <q-input type="text"
-             label="Valor da operação de wait"
+             label="Insira um texto ou uma expressão regular válida"
              class="q-ma-sm"
-             v-model="elementName"
+             v-model="elementValue"
              lazy-rules
-             >
+    >
       <template v-slot:prepend>
         <q-icon name="description" />
       </template>
@@ -17,12 +17,12 @@
 const Resource = require('./resource');
 
 export default {
-  name: "wait",
+  name: "assert",
   props: ['alias'],
   data() {
     return {
-      aliasAction: 'addActionWait',
-      elementName: ''
+      aliasAction: 'addActionAssert',
+      elementValue: ''
     }
   },
   watch: {
@@ -31,9 +31,10 @@ export default {
     }
   },
   created() {
+    Resource.Operation.alias = this.alias;
     Resource.Operation.addOperationQueue(this, () => {
       return {
-        wait: { type: '', field: this.elementName }
+        assert: { type: '', value: this.elementValue }
       };
     });
   }

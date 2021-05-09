@@ -29,7 +29,7 @@ export default {
       Resource.Operation.alias = newValue;
     }
   },
-  created() {
+  created () {
     Resource.Operation.alias = this.alias;
     Resource.Operation.addOperationQueue(this, () => {
       return {

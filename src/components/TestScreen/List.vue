@@ -1,13 +1,11 @@
 <template>
   <q-page class="row items-center justify-evenly">
-    <div class="col-md-11">
-      <q-card v-if="!show_dialog" name="listaTestes">
+    <div class="col-md-12 col-lg-12 col-sm-5">
+      <q-card name="listaTestes">
         <q-card-section>
-          <q-card-title name="titleList">
-            <div class="text-h6 text-center xt-grey-8">
-              Gerenciamento de Testes
-            </div>
-          </q-card-title>
+          <div class="text-h6 text-center text-primary">
+            Gerenciamento de Testes
+          </div>
         </q-card-section>
         <q-card-section class="q-pa-md">
         <template>
@@ -22,8 +20,8 @@
             >
 
               <template v-slot:top>
-                <q-btn color="green" icon="add" :disable="loading" label="Novo Teste" to="/testes/cadastrar" />
-                <q-btn class="q-ml-sm" icon="refresh" color="blue" :disable="loading" @click="refreshTests()" />
+                <q-btn rounded color="green" @click="showCreate()" icon="add" :disable="loading" label="Novo Teste" />
+                <q-btn dense flat rounded class="q-ml-sm" icon="refresh" color="blue" :disable="loading" @click="refreshTests()" />
                 <q-space />
                 <q-input outlined borderless dense debounce="300" v-model="filter" placeholder="Pesquisar">
                   <template v-slot:append>
@@ -34,45 +32,47 @@
 
               <template #body-cell-status="props">
                 <q-td :props="props">
-                  <q-chip :color="props.row.status === STATUS.SUCCESS ? 'green': props.row.status === STATUS.ERROR ? 'red': props.row.status === STATUS.RUNNING ? 'blue' : props.row.status === STATUS.PENDING ? 'orange' : 'grey'" text-color="white" dense class="text-weight-bolder" square>{{props.row[props.col.name]}}</q-chip>
+                  <q-chip :color="props.row.status === STATUS.SUCCESS.label ? 'green': props.row.status === STATUS.ERROR.label ? 'red': props.row.status === STATUS.RUNNING.label ? 'blue' : props.row.status === STATUS.PENDING.label ? 'orange' : 'grey'" text-color="white" dense class="text-weight-bolder" square>{{props.row[props.col.name]}}</q-chip>
+                </q-td>
+              </template>
+
+              <template #body-cell-descriptionText="props">
+                <q-td class="text-center" auto-width>
+                    <span v-if="!props.expand">{{ props.row.descriptionText }}</span>
+                    <span v-if="props.expand">{{ props.row.description }}</span>
+                    <q-btn size="sm" color="yellow-8" flat @click="props.expand = !props.expand" :icon="props.expand ? 'fas fa-eye-slash' : 'fas fa-eye'" />
                 </q-td>
               </template>
 
               <template #body-cell-action="props">
                 <q-td class="text-center">
-
-                  <q-btn v-if="props.row.status === STATUS.NEW" dense flat round color="green" field="actions" title="Play" icon="play_circle" @click="playTest(props.row)"></q-btn>
-<!--                  <q-btn dense flat round color="red" field="actions" title="Stop" icon="stop" @click="stopTest(props.row)"></q-btn>-->
-                  <q-btn dense flat round color="blue" field="actions" title="Editar" icon="edit" @click="editItem(props.row)"></q-btn>
-                  <q-btn dense flat round color="grey" field="actions" title="Deletar" icon="delete" @click="getDelete(props.row)"></q-btn>
+                  <div class="q-gutter-sm">
+                    <q-btn
+                      v-if="props.row.status !== STATUS.RUNNING.value && props.row.status !== STATUS.PENDING.value"
+                      dense glossy push color="green" class="btn-size-md" field="actions" title="Play" icon="play_circle" @click="playTest(props.row)">
+                    </q-btn>
+                    <q-btn dense glossy push color="blue" class="btn-size-md" field="actions" title="Editar" icon="edit" @click="editItem(props.row)"></q-btn>
+                    <q-btn dense glossy push color="grey" class="btn-size-md" field="actions" title="Deletar" icon="delete" @click="getDelete(props.row)"></q-btn>
+                  </div>
+                  <!--                  <q-btn dense flat round color="red" field="actions" title="Stop" icon="stop" @click="stopTest(props.row)"></q-btn>-->
                 </q-td>
               </template>
             </q-table>
-
         </template>
         </q-card-section>
       </q-card>
-        <template v-if="show_dialog">
-          <TestUpdate :edit-item="editedItem" :show_dialog="show_dialog" @updateShowEdit="backToList"></TestUpdate>
-        </template>
-<!--        <div align="right">-->
-<!--          <q-btn @click="backToList()" class="q-ma-md" label="Cancelar"></q-btn>-->
-<!--        </div>-->
       </div>
   </q-page>
 </template>
 
 <script>
-import { exportFile, Notify} from "quasar";
-import TestUpdate from "./TestUpdate";
+import { exportFile, Notify } from 'quasar'
+import { defineComponent } from '@vue/composition-api';
 
 const defaultItem = {
   title: '',
-  code: '',
-  buyRate: '',
-  spotRate: '',
-  sellRate: '',
-  symbol: '',
+  project: '',
+  description: '',
   status: ''
 }
 
@@ -96,12 +96,11 @@ function wrapCsvValue (val, formatFn) {
   return `"${formatted}"`
 }
 
-export default {
+export default defineComponent({
   name: 'List',
-  components: { TestUpdate },
   data () {
     return {
-      STATUS: require('../../constants/Application'),
+      STATUS: require('../../constants/Application').STATUS,
       filter: '',
       loading: false,
       pagination: {
@@ -120,19 +119,48 @@ export default {
           format: val => `${val}`,
           sortable: true
         },
-        { name: 'projeto', align: 'center', label: 'Projeto', field: 'project', sortable: true },
-        // { name: 'usuario', align: 'center', label: 'Usuário', field: 'usuario', sortable: true },
-        { name: 'descricao', align: 'center', label: 'Descrição (BDD)', field: 'description' },
-        { name: 'status', align: 'center', label: 'Status', field: 'status', sortable: true },
-        { name: 'action', align: 'center', label: 'Ações', field: 'actions'}
+        {
+          name: 'project',
+          align: 'center',
+          label: 'Projeto',
+          field: 'project',
+          sortable: true
+        },
+        {
+          name: 'name',
+          align: 'center',
+          label: 'Usuário',
+          field: 'name',
+          sortable: true
+        },
+        {
+          name: 'description',
+          align: 'center',
+          label: 'Descrição (BDD)',
+          field: 'description'
+        },
+        {
+          name: 'status',
+          align: 'center',
+          label: 'Status',
+          field: 'status'
+        },
+        {
+          name: 'action',
+          align: 'center',
+          label: 'Ações',
+          field: 'actions'
+        }
       ],
+      hide_create: Boolean,
+      hide_update: Boolean,
       data: [],
-      show_dialog: false,
-      editedItem: defaultItem
+      editedItem: defaultItem,
+      itemUpdate: {}
     }
   },
   mounted () {
-    if (typeof this.$axios.defaults.headers.common['Authorization'] === 'undefined' || this.$axios.defaults.headers.common['Authorization'] === '') {
+    if (typeof this.$axios.defaults.headers.common.Authorization === 'undefined' || this.$axios.defaults.headers.common.Authorization === '') {
       this.$router.push({ path: '/' })
     }
     // get initial data from server (1st page)
@@ -143,30 +171,24 @@ export default {
   },
 
   methods: {
-    backToList () {
-      this.show_dialog = false,
-      this.refreshTests()
-    },
-
     exportTable () {
       let prepareSelected = ''
-      if(this.selected.length !== 0){
-        let itemSelected = this.selected
-        let fields = Object.keys(itemSelected[0])
-        let replacer = function(key, value) { return value === null ? '' : value }
+      if (this.selected.length !== 0) {
+        const itemSelected = this.selected
+        const fields = Object.keys(itemSelected[0])
+        const replacer = function (key, value) { return value === null ? '' : value }
 
-        prepareSelected = itemSelected.map(function(row){
-          return fields.map(function(fieldName){
+        prepareSelected = itemSelected.map(function (row) {
+          return fields.map(function (fieldName) {
             return JSON.stringify(row[fieldName], replacer)
           }).join(',')
         })
 
         prepareSelected.unshift(fields.join(',')) // add header column
-        prepareSelected = prepareSelected.join('\r\n');
-
+        prepareSelected = prepareSelected.join('\r\n')
       } else {
         // naive encoding to csv format
-        prepareSelected = [ this.columns.map(col => wrapCsvValue(col.label)) ].concat(
+        prepareSelected = [this.columns.map(col => wrapCsvValue(col.label))].concat(
           this.data.map(row => this.columns.map(col => wrapCsvValue(
             typeof col.field === 'function'
               ? col.field(row)
@@ -190,64 +212,70 @@ export default {
         })
       }
     },
-    onRequest (props) {
+    async onRequest (props) {
       const { page, rowsPerPage, sortBy, descending } = props.pagination
       const filter = props.filter
       this.loading = true
 
-      setTimeout(() => {
-        // update rowsCount with appropriate value
-        this.pagination.rowsNumber = this.getRowsNumberCount(filter)
+      // update rowsCount with appropriate value
+      this.pagination.rowsNumber = this.getRowsNumberCount(filter)
 
-        // get all rows if "All" (0) is selected
-        const fetchCount = rowsPerPage === 0 ? this.pagination.rowsNumber : rowsPerPage
+      // get all rows if "All" (0) is selected
+      const fetchCount = rowsPerPage === 0 ? this.pagination.rowsNumber : rowsPerPage
 
-        // calculate starting row of data
-        const startRow = (page - 1) * rowsPerPage
+      // calculate starting row of data
+      const startRow = (page - 1) * rowsPerPage
 
-        // fetch data from "server"
-        const returnedData = this.fetchFromServer(startRow, fetchCount, filter, sortBy, descending)
+      // fetch data from "server"
+      const returnedData = await this.fetchFromServer(startRow, fetchCount, filter, sortBy, descending)
 
-        // clear out existing data and add new
-        this.data.splice(0, this.data.length, ...returnedData)
+      // clear out existing data and add new
+      this.data.splice(0, this.data.length, ...returnedData)
 
-        // don't forget to update local pagination object
-        this.pagination.page = page
-        this.pagination.rowsPerPage = rowsPerPage
-        this.pagination.sortBy = sortBy
-        this.pagination.descending = descending
+      // don't forget to update local pagination object
+      this.pagination.page = page
+      this.pagination.rowsPerPage = rowsPerPage
+      this.pagination.sortBy = sortBy
+      this.pagination.descending = descending
 
-        // ...and turn of loading indicator
-        this.loading = false
-      }, 1500)
+      // ...and turn of loading indicator
+      this.loading = false
     },
 
-    fetchFromServer (startRow, count, filter, sortBy, descending) {
-      this.$axios.get('/tests/', { showLoading: false }).then((response) => {
-        this.data = response.data
+    async fetchFromServer (startRow, count, filter, sortBy, descending) {
+
+      await this.$axios.get('/tests/', { showLoading: false }).then((response) => {
+        this.data = response.data && Object.keys(response.data).length === 0 ? [] : response.data
       }).catch((e) => {
         this.noti = this.$q.notify({
           type: 'negative',
           multiline: true,
-          message: `Erro ao carregar dados: `+e,
+          message: 'Erro ao carregar dados',
           timeout: 3000
         })
       })
+
       const data = filter
         ? this.data.filter(row => row.title.includes(filter))
         : this.data.slice()
 
       // handle sortBy
+      const sortDesc = (descending
+          ? (a, b) => (a.name > b.name ? -1 : a.name < b.name ? 1 : 0)
+          : (a, b) => (a.name > b.name ? 1 : a.name < b.name ? -1 : 0)
+      );
+
+      const sortAsc = (descending
+          ? (a, b) => (parseFloat(b[sortBy]) - parseFloat(a[sortBy]))
+          : (a, b) => (parseFloat(a[sortBy]) - parseFloat(b[sortBy]))
+      )
+
       if (sortBy) {
-        const sortFn = sortBy === 'desc'
-          ? (descending
-              ? (a, b) => (a.name > b.name ? -1 : a.name < b.name ? 1 : 0)
-              : (a, b) => (a.name > b.name ? 1 : a.name < b.name ? -1 : 0)
-          )
-          : (descending
-              ? (a, b) => (parseFloat(b[sortBy]) - parseFloat(a[sortBy]))
-              : (a, b) => (parseFloat(a[sortBy]) - parseFloat(b[sortBy]))
-          )
+        let sortFn = sortAsc;
+
+        if (sortBy === 'desc') {
+          sortFn = sortDesc
+        }
         data.sort(sortFn)
       }
 
@@ -269,7 +297,7 @@ export default {
     getDelete (item) {
       this.$swal({
         title: 'Atenção!!',
-        text: "Tem certeza que deseja deletar o Teste ?",
+        text: 'Tem certeza que deseja deletar o Teste ?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -284,9 +312,9 @@ export default {
     },
 
     deleteTest (item) {
-      let testId = item._id
-      this.$axios.delete('/tests/'+testId).then((response) =>{
-        if(response.status == 200){
+      const testId = item._id
+      this.$axios.delete('/tests/' + testId).then((response) => {
+        if (response.status == 200) {
           this.$swal(
             'Deletado!',
             'O teste foi deletado com sucesso!',
@@ -294,7 +322,7 @@ export default {
           )
           this.refreshTests()
         }
-      }).catch((e) =>{
+      }).catch((e) => {
         this.$swal(
           'Erro!',
           'Entre em contato com o suporte!',
@@ -304,16 +332,25 @@ export default {
       })
     },
 
+    showCreate () {
+      this.$channelEvents.$emit(this.$constantsEvents.SHOW_CREATE_TEST, true);
+    },
+
     editItem (item) {
-      this.editedIndex = this.data.findIndex((v, i) =>v.__index === item.__index)
-      this.editedItem = Object.assign({}, item);
-      this.show_dialog = true;
+      this.editedIndex = this.data.findIndex((v, i) => v.__index === item.__index)
+      this.editedItem = Object.assign({}, item)
+      this.hide_update = true
+      this.itemUpdate = {
+        editItem: this.editedItem,
+        hide: true
+      }
+      this.$channelEvents.$emit(this.$constantsEvents.SHOW_UPDATE_TEST, this.itemUpdate);
     },
     playTest (item) {
-      let testId = item._id
+      const testId = item._id
       this.$swal({
         title: 'Rodar o teste ?',
-        text: "O teste será enviado para a fila!",
+        text: 'O teste será enviado para a fila!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -332,16 +369,16 @@ export default {
       let msg = ''
       this.$axios.post(`/tests/submit/${testId}`).then((response) => {
         msg = response.data.message
-        if(response.status == 200){
+        if (response.status == 200) {
           this.$swal({
             icon: 'success',
             title: 'Tudo certo!',
-            text : msg,
+            text: msg,
             showConfirmButton: false,
             timer: 2000
           })
           this.refreshTests()
-        }else{
+        } else {
           this.testMsgError()
         }
       }).catch((e) => {
@@ -351,8 +388,9 @@ export default {
     stopTest (item) {
       console.log('stop')
     },
+
     refreshTests () {
-      this.onRequest({ filter: this.filter, pagination : this.pagination })
+      this.onRequest({ filter: '', pagination: this.pagination })
     },
 
     testMsgError () {
@@ -360,9 +398,18 @@ export default {
         icon: 'error',
         title: 'Ops.. algo deu errado!',
         text: 'tente novamente, se persistir entre em contato com o suporte!',
-        showConfirmButton: true,
+        showConfirmButton: true
       })
     }
-  },
-}
+  }
+})
 </script>
+
+<style>
+  .btn-size-md {
+    font-size: 12px;
+  }
+  span.block{
+    margin-right: 12px;
+  }
+</style>

@@ -1,32 +1,31 @@
 <template>
-  <q-form @submit="onSubmit" class="form" ref="testsForm">
-    <TestManager :editItem="editItem"></TestManager>
-    <div class="" align="right">
-      <q-btn @click="backToList" class="q-ma-md" label="Cancelar"></q-btn>
-      <q-btn label="Salvar" type="submit" class="q-ma-md" color="primary"/>
+  <q-page class="row items-center justify-evenly">
+    <div class="col-md-12">
+      <q-form @submit="onSubmit" class="form" ref="testsForm">
+        <TestManagement :editItem="editItem"></TestManagement>
+        <div class="" align="right">
+          <q-btn @click="backToList" class="q-ma-md" label="Cancelar"></q-btn>
+          <q-btn label="Salvar" type="submit" class="q-ma-md" color="primary"/>
+        </div>
+      </q-form>
     </div>
-  </q-form>
+  </q-page>
 </template>
 
 <script>
-import TestManager from "./TestManager";
+import TestManagement from "../../components/TestScreen/TestManagement";
 
 export default {
   name: "TestUpdate",
-  components: {TestManager},
+  components: { TestManagement },
   props: {
-    editItem: [],
+    editItem: {},
     show_dialog: Boolean
   },
 
   data() {
     return {
       step: 1,
-      // editedIndex: -1,
-      // editedItem: defaultItem,
-      // mode: "list",
-      // currencyColumns: this.columns,
-      // currencyData: this.data,
       title: '',
       project: '',
       description: '',
@@ -37,20 +36,26 @@ export default {
       operations: []
     }
   },
+  created() {
+    this.operations = []
+  },
+
   methods: {
     backToList() {
       this.$swal({
         title: 'Atenção!!',
-        text: "Cencelar a edição ?",
+        text: "Cancelar a edição ?",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#4ed630',
-        cancelButtonColor: '#c1c1c1',
         cancelButtonText: 'Voltar',
         confirmButtonText: 'Cancelar'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.$emit('updateShowEdit');
+          let itemUpdate = {
+            editItem: {},
+            hide: false
+          }
+          this.$channelEvents.$emit(this.$constantsEvents.SHOW_UPDATE_TEST, itemUpdate);
         }
       })
     },
@@ -84,19 +89,39 @@ export default {
             config
           ).then((response) => {
             this.$swal({
-              title: 'Concluido',
+              title: 'Concluído',
               text: "Edição efetuada com sucesso !",
-              icon: 'warning',
+              icon: 'success',
               confirmButtonColor: '#4ed630',
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                this.$emit('updateShowEdit', this.show_dialog);
+                let itemUpdate = {
+                  editItem: this.editedItem,
+                  hide: false
+                }
+                this.$channelEvents.$emit(this.$constantsEvents.SHOW_UPDATE_TEST, itemUpdate);
               }
             })
             // this.$router.push({ path: '/home' })
           }).catch((e) => {
-            alert('Teste não cadastrado')
+
+            if(e.response.status === 400) {
+              this.$swal({
+                title: 'Atenção !',
+                html: e.response.data.errors[0].msg || 'Erro na tentativa de atualização',
+                icon: 'warning',
+                showConfirmButton: true
+              });
+            } else {
+              this.$swal({
+                title: 'Erro',
+                html: 'Erro na tentativa de atualização',
+                icon: 'error',
+                showConfirmButton: true
+              });
+            }
+
             return false
           })
         }
