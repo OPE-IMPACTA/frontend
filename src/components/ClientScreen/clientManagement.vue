@@ -66,7 +66,7 @@
         <q-input
           outlined
           v-model="editItem.phone"
-          label="Empresa"
+          label="Telefone"
           type="text"
           lazy-rules
           :rules="phoneRules"

@@ -107,9 +107,10 @@ export default defineComponent({
     resetForm() {
       defaultItem.name = "";
       defaultItem.email = "";
-      defaultItem.password = "";
-      defaultItem.confirmPassword = "";
-      defaultItem.group_id = "";
+      defaultItem.cnpj = "";
+      defaultItem.company = "";
+      defaultItem.department = "";
+      defaultItem.phone = "";
     },
 
     hide() {
