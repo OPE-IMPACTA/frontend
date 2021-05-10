@@ -74,7 +74,7 @@ export default defineComponent({
       ? JSON.parse(localStorage.getItem("user"))
       : "";
 
-    this.username = this.user.data.name || "";
+    this.username = this.user.data.name;
   },
 
   computed: {

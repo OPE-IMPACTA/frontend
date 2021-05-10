@@ -128,8 +128,8 @@ module.exports = configure(function (ctx) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: 'Poc de Automacao de Testes',
-        short_name: 'Poc de Automacao de Testes',
+        name: 'Bullest',
+        short_name: 'Bullest',
         description: 'Poc',
         display: 'standalone',
         orientation: 'portrait',

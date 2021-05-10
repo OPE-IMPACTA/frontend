@@ -2,8 +2,8 @@
   "name": "pocautomacaotestes",
   "version": "0.0.1",
   "description": "Poc",
-  "productName": "Poc de Automacao de Testes",
-  "author": "João Siles <joao.siles@i9xp.com.br>",
+  "productName": "Bullest",
+  "author": "",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue ./",

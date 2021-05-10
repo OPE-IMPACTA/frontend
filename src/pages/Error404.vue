@@ -11,8 +11,8 @@
 
       <q-btn
         class="q-mt-xl"
-        color= secondary
-        text-color= primary
+        color="secondary"
+        text-color="primary"
         unelevated
         to="/"
         label="Voltar para Home"
