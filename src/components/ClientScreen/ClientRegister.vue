@@ -4,13 +4,13 @@
       <q-card>
         <q-card-section>
           <div class="text-h5 text-primary" align="center">
-            Cadastrar usuário
+            Cadastrar Cliente
           </div>
         </q-card-section>
         <q-list>
           <q-form @submit="onSubmit" class="form" ref="userCreateForm">
             <q-card-section>
-              <UserManagement :password-rules="passwordRules" :confirm-password-rules="confirmPasswordRules" :editItem="editItem"></UserManagement>
+              <ClientManagement :password-rules="passwordRules" :confirm-password-rules="confirmPasswordRules" :editItem="editItem"></ClientManagement>
             </q-card-section>
             <div class="" align="right">
               <q-btn @click="cancelAdd" class="q-ma-md" label="Cancelar"></q-btn>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import UserManagement from "./userManagement.vue"
+import ClientManagement from "./clientManagement.vue"
 import { defineComponent } from '@vue/composition-api'
 
 const defaultItem = {
@@ -36,8 +36,8 @@ const defaultItem = {
 }
 
 export default defineComponent({
-  name: "UserRegister",
-  components: { UserManagement },
+  name: "ClientRegister",
+  components: { ClientManagement },
   data () {
     return {
       editItem: defaultItem,

@@ -3,7 +3,7 @@
     <div class="col-md-11">
       <ClientList v-if="!show_create_user && !show_update_user" :hide_create="show_create_user" @showCreate="showCreate"
                 @showUpdate="showUpdate" :hide_update="show_update_user"></ClientList>
-      <UserRegister v-if="show_create_user"  :edit-item="editItem" @showCreate="showCreate"></UserRegister>
+      <ClientRegister v-if="show_create_user"  :edit-item="editItem" @showCreate="showCreate"></ClientRegister>
       <UserUpdate v-if="show_update_user" :edit-item="editItem" @showUpdate="showUpdate"></UserUpdate>
     </div>
   </q-page>
@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import ClientList from '../../components/ClientScreen/clientList.vue'
-import UserRegister from '../../components/UserScreen/UserRegister.vue'
+import ClientRegister from '../../components/ClientScreen/ClientRegister.vue'
 import UserUpdate from '../../components/UserScreen/UserUpdate.vue'
 
 import { defineComponent } from '@vue/composition-api'
@@ -23,8 +23,8 @@ const defaultItem = {
   confirmPassword: ''
 }
 export default defineComponent({
-  name: 'UserManager',
-  components: { ClientList, UserUpdate, UserRegister },
+  name: 'ClientManager',
+  components: { ClientList, UserUpdate, ClientRegister },
   data () {
     return {
       show_create_user: false,
@@ -35,6 +35,7 @@ export default defineComponent({
   methods: {
     showCreate (hide) {
       this.show_create_user = hide
+      console.log('teste')
     },
 
     showUpdate (data) {
