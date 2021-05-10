@@ -33,6 +33,7 @@
           type="text"
           lazy-rules
           :rules="cnpjRules"
+          :mask="'##.###.###/####-##'"
         />
       </q-item-section>
     </q-item>
@@ -69,6 +70,7 @@
           type="text"
           lazy-rules
           :rules="phoneRules"
+          :mask="'(##) #####-####'"
         />
       </q-item-section>
     </q-item>
@@ -76,7 +78,9 @@
 </template>
 
 <script>
+import { VueMaskDirective } from "v-mask";
 import { defineComponent } from "@vue/composition-api";
+
 const defaultItem = {
   name: "",
   email: "",
@@ -90,6 +94,9 @@ export default defineComponent({
   props: {
     editItem: {}
   },
+  directives: {
+    mask: VueMaskDirective
+  },
   name: "clientManagement",
   data() {
     return {
@@ -100,10 +107,16 @@ export default defineComponent({
             v
           ) || "Email Inválido"
       ],
-      cnpjRules: [v => !!v || "Cnpj é obrigatório"],
+      cnpjRules: [
+        v => !!v || "Cnpj é obrigatório",
+        v => v.length >= 18 || "Valor incorreto"
+      ],
       companyRules: [v => !!v || "Empresa é obrigatório"],
       departmentRules: [v => !!v || "Departamento é obrigatório"],
-      phoneRules: [v => !!v || "Telefone é obrigatório"]
+      phoneRules: [
+        v => !!v || "Telefone é obrigatório",
+        v => v.length >= 15 || "Valor incorreto"
+      ]
     };
   },
   mounted() {
