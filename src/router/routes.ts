@@ -14,6 +14,7 @@ const routes: RouteConfig[] = [
       { path: '/testes/cadastrar', name: 'cadastrar', component: () => import('pages/uList.vue') },
       { path: '/ResetPassword', component: () => import('pages/RecoverPassword/ResetPassword.vue') },
       { path: '/usuarios/gerenciar', component: () => import('pages/UserScreen/UserManager.vue') },
+      { path: '/clientes/gerenciar', component: () => import('pages/ClientScreen/ClientManager.vue') },
       { path: '*', component: () => import('pages/Error404.vue') }
     ]
   },

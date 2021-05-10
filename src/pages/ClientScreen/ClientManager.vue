@@ -1,8 +1,8 @@
 <template>
   <q-page class="row items-center justify-evenly">
     <div class="col-md-11">
-      <UserList v-if="!show_create_user && !show_update_user" :hide_create="show_create_user" @showCreate="showCreate"
-                @showUpdate="showUpdate" :hide_update="show_update_user"></UserList>
+      <ClientList v-if="!show_create_user && !show_update_user" :hide_create="show_create_user" @showCreate="showCreate"
+                @showUpdate="showUpdate" :hide_update="show_update_user"></ClientList>
       <UserRegister v-if="show_create_user"  :edit-item="editItem" @showCreate="showCreate"></UserRegister>
       <UserUpdate v-if="show_update_user" :edit-item="editItem" @showUpdate="showUpdate"></UserUpdate>
     </div>
@@ -10,9 +10,9 @@
 </template>
 
 <script lang="ts">
-import UserList from './userList.vue'
-import UserRegister from './UserRegister.vue'
-import UserUpdate from './UserUpdate.vue'
+import ClientList from '../../components/ClientScreen/clientList.vue'
+import UserRegister from '../../components/UserScreen/UserRegister.vue'
+import UserUpdate from '../../components/UserScreen/UserUpdate.vue'
 
 import { defineComponent } from '@vue/composition-api'
 const defaultItem = {
@@ -24,7 +24,7 @@ const defaultItem = {
 }
 export default defineComponent({
   name: 'UserManager',
-  components: { UserList, UserUpdate, UserRegister },
+  components: { ClientList, UserUpdate, UserRegister },
   data () {
     return {
       show_create_user: false,
