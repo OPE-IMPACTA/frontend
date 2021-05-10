@@ -1,19 +1,18 @@
 <template>
   <q-page class="row items-center justify-evenly">
     <div class="col-md-10">
-      <GraphicTests></GraphicTests>
+      <TaskCard></TaskCard>
     </div>
   </q-page>
 </template>
 
 <script lang="ts">
-import IEcharts from "vue-echarts-v3/src/full.js"
-import GraphicTests from "components/Cards/GraphicTests.vue"
+import TaskCard from "../components/Cards/TaskCard.vue"
 import { defineComponent } from '@vue/composition-api'
 
 export default defineComponent({
   name: 'Home',
-  components: { GraphicTests, IEcharts },
+  components: { TaskCard },
 
   data () {
     return {

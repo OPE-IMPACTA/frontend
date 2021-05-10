@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import Login from 'components/Login.vue'
+import Login from '../components/Login.vue'
 import { defineComponent } from '@vue/composition-api'
 
 export default defineComponent({

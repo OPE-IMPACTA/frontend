@@ -114,6 +114,8 @@ export default {
         .then(response => {
           let userJson = JSON.stringify(response.data);
 
+          console.log(userJson)
+
           this.$axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${response.headers.authorization}`;
