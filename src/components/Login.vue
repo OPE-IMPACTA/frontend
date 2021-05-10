@@ -108,6 +108,7 @@ export default {
         })
         .then(response => {
           let userJson = JSON.stringify(response.data);
+          console.log('response', response.headers.Authorization)
 
           this.$axios.defaults.headers.common[
             "Authorization"
@@ -129,45 +130,6 @@ export default {
           return false;
         });
     },
-
-    recuperarSenha() {
-      this.$swal({
-        title: "Recuperar Senha",
-        html: "Vamos enviar um email para recuperar sua senha!",
-        input: "email",
-        validationMessage: "Digite um email válido",
-        inputLabel: "Digite o email cadastrado",
-        inputPlaceholder: "Digite seu email",
-        inputAttributes: {
-          autocapitalize: "off"
-        },
-        showCancelButton: true,
-        confirmButtonText: "Enviar",
-        cancelButtonText: "Cancelar",
-        showLoaderOnConfirm: true,
-        preConfirm: email => {
-          this.$axios
-            .post("auth/forgot_password", {
-              email: email
-            })
-            .then(response => {
-              this.$swal({
-                title: "Pronto, tudo certo!",
-                text: "Um email foi enviado para redefinição de senha.",
-                icon: "success"
-              });
-            })
-            .catch(error => {
-              this.$swal({
-                title: "Uh-oh",
-                text: error.response.data.errors[0].msg,
-                icon: "error"
-              });
-            });
-        },
-        allowOutsideClick: () => !this.$swal.isLoading()
-      });
-    }
   },
   mounted: function() {
     if (

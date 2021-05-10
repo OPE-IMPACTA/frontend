@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from 'axios'
 import { boot } from 'quasar/wrappers'
 import {
   Loading,
-  QSpinnerPie
+  QSpinnerDots
 } from 'quasar'
 
 declare module 'vue/types/vue' {
@@ -16,11 +16,11 @@ export default boot(({ Vue }) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   Vue.prototype.$axios = axios
-  Vue.prototype.$axios.interceptors.request.use(async function (config) {
+  Vue.prototype.$axios.interceptors.request.use(async function (config: { hasOwnProperty: (arg0: string) => any; optLoading: { spinner: any; spinnerColor: any; message: any; delay: any }; showLoading: boolean }) {
 
     var optLoading = {
-      spinner: (config.hasOwnProperty('spinner')) ? config.optLoading.spinner : QSpinnerPie,
-      spinnerColor: (config.hasOwnProperty('spinnerColor')) ? config.optLoading.spinnerColor : 'yellow',
+      spinner: (config.hasOwnProperty('spinner')) ? config.optLoading.spinner : QSpinnerDots,
+      spinnerColor: (config.hasOwnProperty('spinnerColor')) ? config.optLoading.spinnerColor : 'blue',
       message: (config.hasOwnProperty('message')) ? config.optLoading.message : '',
       delay: (config.hasOwnProperty('delay')) ? config.optLoading.delay : 400
     };
@@ -32,7 +32,7 @@ export default boot(({ Vue }) => {
     }
 
     return config;
-  }, function (error) {
+  }, function (error: any) {
     return Promise.reject(error);
   });
 
@@ -62,6 +62,6 @@ export default boot(({ Vue }) => {
  *
  * @param ms
  */
-function sleep(ms: int) {
+function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }

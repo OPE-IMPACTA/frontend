@@ -1,15 +1,15 @@
 <template>
-  <q-list bordered class="rounded-borders">
+  <q-list bordered class="rounded-borders" style="backgroud">
     <div class="q-toolbar row no-wrap items-center">
       <div class="col-md-12  row flex-center overflow-hidden">
-          <img src="../assets/logoE2E.png" style="width: 50%; padding: 10px">
+        <img
+          src="../assets/logo-bullest.png"
+          style="width: 50%; padding: 15px; margin-top: 10px"
+        />
       </div>
     </div>
-    <q-item-label
-      header
-      class="text-white"
-    >
-      Navegação
+    <q-item-label header class="text-white text-center text-h4">
+      Admin
     </q-item-label>
 
     <q-item
@@ -44,7 +44,6 @@
       </q-item-section>
     </q-item>
 
-
     <q-item
       class="q-ma-sm navigation-item"
       to="/usuarios/gerenciar"
@@ -65,7 +64,6 @@
       class="q-ma-sm navigation-item"
       label="Gerenciar Relatórios"
     >
-
       <q-item
         class="q-ml-xl"
         clickable
@@ -95,19 +93,17 @@
           Gráficos
         </q-item-section>
       </q-item>
-
     </q-expansion-item>
-
   </q-list>
 </template>
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       test: false,
       user: false
-    }
-  },
-}
+    };
+  }
+};
 </script>
