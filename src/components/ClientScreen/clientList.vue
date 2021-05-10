@@ -217,7 +217,7 @@ export default {
         {
           name: "company",
           align: "left",
-          label: "Company",
+          label: "Empresa",
           field: "company",
           sortable: true
         },
@@ -260,11 +260,9 @@ export default {
   },
   methods: {
     exportTable() {
-      const header = ["Nome", "Email", "Admin"];
+      const header = ["Nome", "Email", "Cnpj", "Empresa", "Departmento", "Phone"];
       const content = this.data.map(row => {
-        return `\r\n"${row.name}", "${row.email}", "${
-          row.group === "admin" ? "Sim" : "Não"
-        }"`;
+        return `\r\n"${row.name}", "${row.email}", "${row.cnpj}", "${row.company}", "${row.department}", "${row.phone}"`;
       });
       const result = `"${header.join('","')}"\r\n${content}`;
 
