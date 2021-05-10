@@ -4,17 +4,17 @@
       <q-card>
         <q-card-section>
           <div class="text-h5 text-primary" align="center">
-            Atualizar usuário
+            Atualizar cliente
           </div>
         </q-card-section>
         <q-list>
           <q-form @submit="onSubmit" class="form" ref="userCreateForm">
             <q-card-section>
-              <UserManagement
+              <ClientManagement
                 :password-rules="passwordRules"
                 :confirm-password-rules="confirmPasswordRules"
                 :editItem="editItem"
-              ></UserManagement>
+              ></ClientManagement>
             </q-card-section>
             <div class="" align="right">
               <q-btn
@@ -37,15 +37,15 @@
 </template>
 
 <script>
-import UserManagement from "./userManagement.vue";
+import ClientManagement from "./clientManagement.vue";
 import { defineComponent } from "@vue/composition-api";
 
 export default defineComponent({
   props: {
     editItem: {}
   },
-  name: "UserUpdate",
-  components: { UserManagement },
+  name: "ClientUpdate",
+  components: { ClientManagement },
   data() {
     return {
       prompt: false,

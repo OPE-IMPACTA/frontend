@@ -4,7 +4,7 @@
       <ClientList v-if="!show_create_user && !show_update_user" :hide_create="show_create_user" @showCreate="showCreate"
                 @showUpdate="showUpdate" :hide_update="show_update_user"></ClientList>
       <ClientRegister v-if="show_create_user"  :edit-item="editItem" @showCreate="showCreate"></ClientRegister>
-      <UserUpdate v-if="show_update_user" :edit-item="editItem" @showUpdate="showUpdate"></UserUpdate>
+      <ClientUpdate v-if="show_update_user" :edit-item="editItem" @showUpdate="showUpdate"></ClientUpdate>
     </div>
   </q-page>
 </template>
@@ -12,7 +12,7 @@
 <script lang="ts">
 import ClientList from '../../components/ClientScreen/clientList.vue'
 import ClientRegister from '../../components/ClientScreen/ClientRegister.vue'
-import UserUpdate from '../../components/UserScreen/UserUpdate.vue'
+import ClientUpdate from '../../components/ClientScreen/ClientUpdate.vue'
 
 import { defineComponent } from '@vue/composition-api'
 const defaultItem = {
@@ -24,7 +24,7 @@ const defaultItem = {
 }
 export default defineComponent({
   name: 'ClientManager',
-  components: { ClientList, UserUpdate, ClientRegister },
+  components: { ClientList, ClientUpdate, ClientRegister },
   data () {
     return {
       show_create_user: false,
@@ -35,7 +35,6 @@ export default defineComponent({
   methods: {
     showCreate (hide) {
       this.show_create_user = hide
-      console.log('teste')
     },
 
     showUpdate (data) {
