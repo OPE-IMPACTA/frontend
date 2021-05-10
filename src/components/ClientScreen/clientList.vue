@@ -164,11 +164,7 @@
 import { exportFile } from "quasar";
 const defaultItem = {
   name: "",
-  email: "",
-  group_id: false,
-  password: "",
-  confirmPassword: "",
-  group: ""
+  email: ""
 };
 
 export default {
@@ -187,7 +183,6 @@ export default {
     return {
       filter: "",
       loading: false,
-      group: "",
       show_form: false,
       editedItem: defaultItem,
       mode: "list",
