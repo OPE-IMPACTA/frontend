@@ -32,25 +32,6 @@
     </q-item>
 
     <q-item
-      to="/testes/gerenciar"
-      exact
-      clickable
-      v-ripple
-      class="menu"
-      active-class="menu-link"
-      :active="link === 'inbox'"
-      @click="link = 'inbox'"
-    >
-      <q-item-section avatar>
-        <i class="far fa-chart-bar"></i>
-      </q-item-section>
-
-      <q-item-section>
-        <q-item-label>Gerenciar Testes</q-item-label>
-      </q-item-section>
-    </q-item>
-    
-    <q-item
       v-if="admin"
       to="/usuarios/gerenciar"
       exact
@@ -70,8 +51,9 @@
       </q-item-section>
     </q-item>
 
-    <q-item v-else
-      to="/usuarios/gerenciar"
+    <q-item
+      v-if="admin"
+      to="/clientes/gerenciar"
       exact
       clickable
       v-ripple
@@ -81,14 +63,53 @@
       @click="link = 'inbox'"
     >
       <q-item-section avatar>
-        <i class="fas fa-users"></i>
+        <i class="fas fa-users-cog"></i>
       </q-item-section>
 
       <q-item-section>
-        <q-item-label>Meus Dados</q-item-label>
+        <q-item-label>Gerenciar Clientes</q-item-label>
       </q-item-section>
     </q-item>
 
+    <q-item
+      v-if="admin"
+      to="/projetos/gerenciar"
+      exact
+      clickable
+      v-ripple
+      class="menu"
+      active-class="menu-link"
+      :active="link === 'inbox'"
+      @click="link = 'inbox'"
+    >
+      <q-item-section avatar>
+        <i class="fas fa-briefcase"></i>
+      </q-item-section>
+
+      <q-item-section>
+        <q-item-label>Gerenciar Projetos</q-item-label>
+      </q-item-section>
+    </q-item>
+
+    <q-item
+      v-if="admin"
+      to="/tarefas/gerenciar"
+      exact
+      clickable
+      v-ripple
+      class="menu"
+      active-class="menu-link"
+      :active="link === 'inbox'"
+      @click="link = 'inbox'"
+    >
+      <q-item-section avatar>
+        <i class="fas fa-tasks"></i>
+      </q-item-section>
+
+      <q-item-section>
+        <q-item-label>Gerenciar Tarefas</q-item-label>
+      </q-item-section>
+    </q-item>
 
     <q-expansion-item
       icon="fas fa-clipboard-list fa-2x"
