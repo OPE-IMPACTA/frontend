@@ -20,7 +20,7 @@ export default boot(({ Vue }) => {
 
     var optLoading = {
       spinner: (config.hasOwnProperty('spinner')) ? config.optLoading.spinner : QSpinnerDots,
-      spinnerColor: (config.hasOwnProperty('spinnerColor')) ? config.optLoading.spinnerColor : 'blue',
+      spinnerColor: (config.hasOwnProperty('spinnerColor')) ? config.optLoading.spinnerColor : 'secondary',
       message: (config.hasOwnProperty('message')) ? config.optLoading.message : '',
       delay: (config.hasOwnProperty('delay')) ? config.optLoading.delay : 400
     };

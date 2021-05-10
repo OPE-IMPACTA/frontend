@@ -1,5 +1,5 @@
 <template>
-  <q-list bordered class="rounded-borders" style="backgroud">
+  <q-list bordered class="rounded-borders text-accent">
     <div class="q-toolbar row no-wrap items-center">
       <div class="col-md-12  row flex-center overflow-hidden">
         <img
@@ -8,17 +8,19 @@
         />
       </div>
     </div>
-    <q-item-label header class="text-white text-center text-h4">
+    <q-item-label header class="text-secondary text-center text-h4">
       Admin
     </q-item-label>
 
     <q-item
       to="/home"
       exact
-      active-class="tab-active"
-      class="q-ma-sm navigation-item"
       clickable
       v-ripple
+      class="menu"
+      active-class="menu-link"
+      :active="link === 'inbox'"
+      @click="link = 'inbox'"
     >
       <q-item-section avatar>
         <q-icon name="fas fa-home" />
@@ -30,10 +32,14 @@
     </q-item>
 
     <q-item
-      class="q-ma-sm navigation-item"
       to="/testes/gerenciar"
-      active-class="tab-active"
+      exact
       clickable
+      v-ripple
+      class="menu"
+      active-class="menu-link"
+      :active="link === 'inbox'"
+      @click="link = 'inbox'"
     >
       <q-item-section avatar>
         <i class="far fa-chart-bar"></i>
@@ -45,10 +51,14 @@
     </q-item>
 
     <q-item
-      class="q-ma-sm navigation-item"
       to="/usuarios/gerenciar"
-      active-class="tab-active"
+      exact
       clickable
+      v-ripple
+      class="menu"
+      active-class="menu-link"
+      :active="link === 'inbox'"
+      @click="link = 'inbox'"
     >
       <q-item-section avatar>
         <i class="fas fa-users"></i>
@@ -61,14 +71,17 @@
 
     <q-expansion-item
       icon="fas fa-clipboard-list fa-2x"
-      class="q-ma-sm navigation-item"
       label="Gerenciar Relatórios"
     >
       <q-item
-        class="q-ml-xl"
-        clickable
-        active-class="tab-active"
         to="/relatorios/historicos"
+        exact
+        clickable
+        v-ripple
+        class="menu"
+        active-class="menu-link"
+        :active="link === 'inbox'"
+        @click="link = 'inbox'"
       >
         <q-item-section avatar>
           <q-icon name="content_paste" />
@@ -80,10 +93,14 @@
       </q-item>
 
       <q-item
-        class="q-ml-xl"
-        clickable
-        active-class="tab-active"
         to="/relatorios/graficos"
+        exact
+        clickable
+        v-ripple
+        class="menu"
+        active-class="menu-link"
+        :active="link === 'inbox'"
+        @click="link = 'inbox'"
       >
         <q-item-section avatar>
           <q-icon name="stacked_bar_chart" />
@@ -102,8 +119,23 @@ export default {
   data() {
     return {
       test: false,
-      user: false
+      user: false,
+      link: "inbox"
     };
   }
 };
 </script>
+
+<style lang="scss">
+.menu {
+  color: $accent;
+}
+
+.menu-link {
+  color: $primary;
+  background-color: $secondary;
+  font-size: 1.2rem;
+  box-shadow: 0 6px 12px rgba(30, 60, 90, 0.2);
+  transform: scale(1);
+}
+</style>

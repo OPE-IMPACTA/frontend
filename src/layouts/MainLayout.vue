@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header v-if="isLogin" elevated>
+    <q-header v-if="isLogin" elevated class="bg-secondary text-primary">
       <q-toolbar>
         <q-btn
           flat
@@ -10,23 +10,17 @@
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
-        <q-toolbar-title>
-
-        </q-toolbar-title>
-        <q-toolbar-title v-if="isLogin">Bem-vindo (a) {{this.username}}!</q-toolbar-title>
-
-        <div
-          :class="$q.dark.isActive ? 'dark_gradient' : 'normal_gradient'"
-        ></div>
-
+        <q-toolbar-title class="text-center" v-if="isLogin"
+          >Bem-vindo (a) {{ username }}!</q-toolbar-title
+        >
         <q-btn
-          color="#9c9c9c"
-          flat
-          round
-          @click="$q.dark.toggle()"
-          :icon="$q.dark.isActive ? 'nights_stay' : 'wb_sunny'"
+          v-if="isLogin"
+          ref="btnLogout"
+          class="btnLogout"
+          @click="onLogout"
+          icon-right="logout"
+          label="Sair"
         />
-        <q-btn v-if="isLogin" ref="btnLogout" class="btnLogout" @click="onLogout" icon-right="logout" label="Sair" />
       </q-toolbar>
     </q-header>
     <q-drawer
@@ -34,23 +28,21 @@
       v-model="leftDrawerOpen"
       side="left"
       elevated
-      class="left-navigation text-white"
+      class="left-navigation text-accent bg-primary"
       show-if-above
     >
-      <div
-        class="full-height drawer_normal"
-      >
-      <MenuLateral></MenuLateral>
+      <div class="full-height bg-primary">
+        <MenuLateral></MenuLateral>
       </div>
     </q-drawer>
     <q-page-container>
-      <router-view/>
+      <router-view />
     </q-page-container>
 
-    <q-footer v-if="isLogin" elevated >
+    <q-footer v-if="isLogin" class="bg-secondary text-primary">
       <q-toolbar>
-        <q-toolbar-title>
-         E2E
+        <q-toolbar-title class="q-ml-xl">
+          Nós somos Bullest
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
@@ -58,65 +50,73 @@
 </template>
 
 <script lang="ts">
-import {
-  Loading,
-  QSpinnerPie
-} from 'quasar'
-
-import { defineComponent, ref } from '@vue/composition-api'
-import MenuLateral from "components/Menu.vue"
+import { defineComponent, ref } from "@vue/composition-api";
+import { use } from "echarts";
+import MenuLateral from "../components/Menu.vue";
 
 export default defineComponent({
-  name: 'MainLayout',
+  name: "MainLayout",
   components: { MenuLateral },
-  setup () {
-    const leftDrawerOpen = ref(false)
-    return { leftDrawerOpen }
+  setup() {
+    const leftDrawerOpen = ref(false);
+    return { leftDrawerOpen };
   },
 
-  data () {
+  data() {
     return {
       user: {},
-      username: ''
-    }
+      username: ""
+    };
   },
 
   created() {
-    this.user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : '';
-    this.username = this.user.name;
+    this.user = localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user"))
+      : "";
+
+    this.username = this.user.data.name || "";
   },
 
   computed: {
-    isLogin () {
-      return this.$route.name !== 'login'
+    isLogin() {
+      return this.$route.name !== "login";
     }
   },
   methods: {
-    onLogout () {
-      this.$axios.post('/auth/logout').then((response) => {
-        localStorage.setItem('user', '');
-        localStorage.setItem('token', '');
-        this.$axios.defaults.headers.common['Authorization'] = '';
-        this.leftDrawerOpen = false;
-        this.$router.push({ name: 'login' });
-      }).catch((er) =>{
-        console.log(er)
-      });
+    onLogout() {
+      this.$axios
+        .post("/auth/logout")
+        .then(response => {
+          localStorage.setItem("user", "");
+          localStorage.setItem("token", "");
+          this.$axios.defaults.headers.common["Authorization"] = "";
+          this.leftDrawerOpen = false;
+          this.$router.push({ name: "login" });
+        })
+        .catch(er => {
+          console.log(er);
+        });
     }
   }
-})
+});
 </script>
 
-<style>
+<style lang="scss">
 .q-drawer {
   background-size: contain !important;
   background-repeat: no-repeat;
   background-position: bottom;
 }
+
 .drawer_normal {
   background-color: rgba(1, 1, 1, 0.75);
 }
+
 .tab-active {
   background-color: green;
+}
+
+.menu-lateral {
+  background: $cyan-7;
 }
 </style>

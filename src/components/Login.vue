@@ -1,7 +1,7 @@
 <template>
   <q-layout>
     <q-page-container>
-      <q-page class="flex flex-center">
+      <q-page class="flex flex-center bg-quaternary">
         <div id="particles-js"></div>
         <q-card
           class="my-card"
@@ -16,9 +16,7 @@
             <q-card class="login-form col-8">
               <q-card-section>
                 <div class="text-center q-pt-xl">
-                  <div class="text-h2">
-                    <p class="login-txt">Login</p>
-                  </div>
+                  <p class="text-h2 login-txt text-secondary">Login</p>
                 </div>
               </q-card-section>
               <q-card-section>
@@ -30,7 +28,7 @@
                     type="email"
                     label="Email"
                     class="q-ma-sm"
-                    color="indigo-10"
+                    color="secondary"
                     lazy-rules
                     :rules="[
                       val => (val && val.length > 0) || 'Digite o seu Email'
@@ -47,7 +45,7 @@
                     label="Senha"
                     type="password"
                     class="q-ma-sm"
-                    color="indigo-10"
+                    color="secondary"
                     lazy-rules
                     :rules="[
                       val => (val && val.length > 0) || 'Digite sua senha'
@@ -58,8 +56,15 @@
                     </template>
                   </q-input>
                   <div class="q-pa-md q-gutter-md">
-                    <div class="row justify-center">
-                      <q-btn rounded type="submit" color="primary" label="Entrar" size="20px" style="width: 200px" />
+                    <div class="row justify-end">
+                      <q-btn
+                        rounded
+                        type="submit"
+                        color="primary"
+                        label="Entrar"
+                        size="17px"
+                        style="width: 150px"
+                      />
                     </div>
                   </div>
                 </q-form>
@@ -108,7 +113,6 @@ export default {
         })
         .then(response => {
           let userJson = JSON.stringify(response.data);
-          console.log('response', response.headers.Authorization)
 
           this.$axios.defaults.headers.common[
             "Authorization"
@@ -129,7 +133,7 @@ export default {
           this.onReset();
           return false;
         });
-    },
+    }
   },
   mounted: function() {
     if (
