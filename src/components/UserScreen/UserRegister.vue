@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import UserManagement from "../../components/UserScreen/userManagement.vue"
+import UserManagement from "./userManagement.vue"
 import { defineComponent } from '@vue/composition-api'
 
 const defaultItem = {

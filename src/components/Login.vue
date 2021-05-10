@@ -16,7 +16,7 @@
             <q-card class="login-form col-8">
               <q-card-section>
                 <div class="text-center q-pt-xl">
-                  <p class="text-h2 login-txt text-secondary">Login</p>
+                  <p class="text-h2 text-secondary">Login</p>
                 </div>
               </q-card-section>
               <q-card-section>
@@ -113,8 +113,6 @@ export default {
         })
         .then(response => {
           let userJson = JSON.stringify(response.data);
-
-          console.log(userJson)
 
           this.$axios.defaults.headers.common[
             "Authorization"
@@ -276,8 +274,4 @@ export default {
   background: linear-gradient(145deg, #000000);
 }
 
-.login-txt {
-  color: $indigo-10;
-  font-family: "Helvica";
-}
 </style>

@@ -10,9 +10,9 @@
 </template>
 
 <script lang="ts">
-import UserList from '../../components/UserScreen/userList.vue'
-import UserRegister from '../../components/UserScreen/UserRegister.vue'
-import UserUpdate from '../../components/UserScreen/UserUpdate.vue'
+import UserList from './userList.vue'
+import UserRegister from './UserRegister.vue'
+import UserUpdate from './UserUpdate.vue'
 
 import { defineComponent } from '@vue/composition-api'
 const defaultItem = {
