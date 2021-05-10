@@ -8,13 +8,9 @@
           </div>
         </q-card-section>
         <q-list>
-          <q-form @submit="onSubmit" class="form" ref="userCreateForm">
+          <q-form @submit="onSubmit" class="form" ref="clientCreateForm">
             <q-card-section>
-              <ClientManagement
-                :password-rules="passwordRules"
-                :confirm-password-rules="confirmPasswordRules"
-                :editItem="editItem"
-              ></ClientManagement>
+              <ClientManagement :editItem="editItem"></ClientManagement>
             </q-card-section>
             <div class="" align="right">
               <q-btn
@@ -48,11 +44,7 @@ export default defineComponent({
   components: { ClientManagement },
   data() {
     return {
-      prompt: false,
-      passwordRules: [],
-      confirmPasswordRules: [],
-      group_id: this.editItem.group_id,
-      updateAdmin: false
+      group_id: this.editItem.group_id
     };
   },
 
@@ -72,7 +64,7 @@ export default defineComponent({
 
       let msg = "";
       this.$swal({
-        title: "Atualizar Usuário ?",
+        title: "Atualizar Cliente ?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Confirmar",
@@ -80,7 +72,7 @@ export default defineComponent({
       }).then(result => {
         if (result.isConfirmed) {
           this.$axios
-            .put(`users/${data.id}`, data)
+            .put(`clients/${data.id}`, data)
             .then(response => {
               msg = response.data.Message;
 
@@ -104,30 +96,18 @@ export default defineComponent({
     },
 
     buildDataUpdate() {
-      let resetPass = false;
       let data = {};
-
       data = {
         id: this.editItem._id,
         name: this.editItem.name,
         email: this.editItem.email,
-        group_id: this.editItem.group.value
+        cnpj: this.editItem.cnpj,
+        company: this.editItem.company,
+        department: this.editItem.department,
+        phone: this.editItem.phone
       };
 
-      resetPass = this.validResetPassword();
-
-      if (resetPass) {
-        data.password = this.editItem.password;
-        data.confirmPassword = this.editItem.confirmPassword;
-      }
-
       return data;
-    },
-
-    validResetPassword() {
-      return (
-        this.editItem.password !== "" && this.editItem.confirmPassword !== ""
-      );
     },
 
     cancelAdd() {
