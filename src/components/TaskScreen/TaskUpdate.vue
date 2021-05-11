@@ -4,11 +4,11 @@
       <q-card>
         <q-card-section>
           <div class="text-h5 text-primary" align="center">
-            Atualizar Projeto
+            Atualizar Tarefa
           </div>
         </q-card-section>
         <q-list>
-          <q-form @submit="onSubmit" class="form" ref="projectCreateForm">
+          <q-form @submit="onSubmit" class="form" ref="taskCreateForm">
             <q-card-section>
               <TaskManagement :editItem="editItem"></TaskManagement>
             </q-card-section>
@@ -40,12 +40,12 @@ export default defineComponent({
   props: {
     editItem: {}
   },
-  name: "ProjectUpdate",
+  name: "TaskUpdate",
   components: { TaskManagement },
   data() {
     return {
       user_id: this.editItem.user_id,
-      client_id: this.editItem.client_id
+      project_id: this.editItem.project_id
     };
   },
 
@@ -65,7 +65,7 @@ export default defineComponent({
 
       let msg = "";
       this.$swal({
-        title: "Atualizar Projeto ?",
+        title: "Atualizar Tarefa ?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Confirmar",
@@ -73,7 +73,7 @@ export default defineComponent({
       }).then(result => {
         if (result.isConfirmed) {
           this.$axios
-            .put(`projects/${data.id}`, data)
+            .put(`tasks/${data.id}`, data)
             .then(response => {
               msg = response.data.Message;
 
@@ -98,12 +98,15 @@ export default defineComponent({
 
     buildDataUpdate() {
       let data = {};
-      
+
       data = {
         id: this.editItem._id,
+        project_id: this.editItem.project.value || this.editItem.project_id,
         user_id: this.editItem.user.value || this.editItem.user_id,
-        client_id: this.editItem.client.value || this.editItem.client_id,
         description: this.editItem.description,
+        startDate: this.editItem.startDate,
+        endDate: this.editItem.endDate,
+        hours: this.editItem.hours
       };
 
       return data;

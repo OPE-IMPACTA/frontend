@@ -4,11 +4,11 @@
       <q-card>
         <q-card-section>
           <div class="text-h5 text-primary" align="center">
-            Cadastrar Projeto
+            Cadastrar Tarefa
           </div>
         </q-card-section>
         <q-list>
-          <q-form @submit="onSubmit" class="form" ref="projectCreateForm">
+          <q-form @submit="onSubmit" class="form" ref="taskCreateForm">
             <q-card-section>
               <TaskManagement :editItem="editItem"></TaskManagement>
             </q-card-section>
@@ -37,13 +37,16 @@ import TaskManagement from "./taskManagement.vue";
 import { defineComponent } from "@vue/composition-api";
 
 const defaultItem = {
-  user: "",
-  client: "",
-  description: ""
+  project_id: "",
+  user_id: "",
+  description: "",
+  startDate: "",
+  endDate: "",
+  hours: ""
 };
 
 export default defineComponent({
-  name: "ProjectRegister",
+  name: "TaskRegister",
   components: { TaskManagement },
   data() {
     return {
@@ -55,7 +58,7 @@ export default defineComponent({
   methods: {
     onSubmit() {
       this.$swal({
-        title: "Cadastrar Projeto ?",
+        title: "Cadastrar Tarefa ?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Cadastrar",
@@ -64,14 +67,16 @@ export default defineComponent({
       }).then(result => {
         if (result.isConfirmed) {
           const data = {
+            project_id: this.editItem.project.value,
             user_id: this.editItem.user.value,
-            client_id: this.editItem.client.value,
             description: this.editItem.description,
-            status: "Novo"
+            startDate: this.editItem.startDate,
+            endDate: this.editItem.endDate,
+            hours: this.editItem.hours
           };
 
           this.$axios
-            .post("projects", data)
+            .post("tasks", data)
             .then(response => {
               this.$swal({
                 title: response.data.Message,
@@ -109,9 +114,12 @@ export default defineComponent({
     },
 
     resetForm() {
-      defaultItem.user = "";
-      defaultItem.client = "";
-      defaultItem.description = "";
+      (defaultItem.project_id = ""),
+        (defaultItem.user_id = ""),
+        (defaultItem.description = ""),
+        (defaultItem.startDate = ""),
+        (defaultItem.endDate = ""),
+        (defaultItem.hours = "");
     },
 
     hide() {
