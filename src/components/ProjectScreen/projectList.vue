@@ -196,7 +196,7 @@ export default {
         {
           name: "user",
           required: true,
-          label: "Projetos",
+          label: "Usuários",
           align: "left",
           field: "user",
           sortable: true

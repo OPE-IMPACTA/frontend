@@ -23,7 +23,7 @@
               rounded
               @click="showCreatProject"
               icon="add"
-              label="Novo projeto"
+              label="Nova tarefa"
               class="bg-primary text-accent"
             />
             <q-btn
@@ -163,13 +163,12 @@
 <script>
 import { exportFile } from "quasar";
 const defaultItem = {
-  client: "",
-  client_id: "",
-  description: "",
-  status: "",
-  user: "",
+  project_id: "",
   user_id: "",
-  id: ""
+  description: "",
+  startDate: "",
+  endDate: "",
+  hours: ""
 };
 
 export default {
@@ -194,18 +193,18 @@ export default {
       mode: "list",
       columns: [
         {
-          name: "user",
+          name: "project",
           required: true,
-          label: "Projetos",
+          label: "Projeto",
           align: "left",
           field: "user",
           sortable: true
         },
         {
-          name: "client",
+          name: "user",
           align: "left",
-          label: "Clientes",
-          field: "client",
+          label: "Usuário",
+          field: "user",
           sortable: true
         },
         {
@@ -213,6 +212,27 @@ export default {
           align: "left",
           label: "Descrição",
           field: "description",
+          sortable: true
+        },
+        {
+          name: "startDate",
+          align: "left",
+          label: "Data ínicio",
+          field: "startDate",
+          sortable: true
+        },
+        {
+          name: "endDate",
+          align: "left",
+          label: "Data final",
+          field: "endDate",
+          sortable: true
+        },
+        {
+          name: "hours",
+          align: "left",
+          label: "Hora",
+          field: "hours",
           sortable: true
         },
         { name: "action", align: "center", label: "Ações", field: "actions" }
@@ -240,9 +260,9 @@ export default {
   },
   methods: {
     exportTable() {
-      const header = ["Projetos", "Clientes", "Descrição"];
+      const header = ["Projetos", "Usuários", "Descrição", "Data ínicio", "Data final", "Hora"];
       const content = this.data.map(row => {
-        return `\r\n"${row.project}", "${row.client}", "${row.description}"`;
+        return `\r\n"${row.project}", "${row.user}", "${row.description}", "${row.startDate}", "${row.startEnd}", ${row.hours}`;
       });
       const result = `"${header.join('","')}"\r\n${content}`;
 
@@ -297,7 +317,7 @@ export default {
       };
 
       this.$axios
-        .get("projects", config)
+        .get("tasks", config)
         .then(response => {
           this.data = response.data.data;
         })
