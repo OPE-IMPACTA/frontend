@@ -16,6 +16,7 @@ const routes: RouteConfig[] = [
       { path: '/usuarios/gerenciar', component: () => import('pages/UserScreen/UserManager.vue') },
       { path: '/clientes/gerenciar', component: () => import('pages/ClientScreen/ClientManager.vue') },
       { path: '/projetos/gerenciar', component: () => import('pages/ProjectsScreen/ProjectManager.vue') },
+      { path: '/tarefas/gerenciar', component: () => import('pages/TasksScreen/TasksManager.vue') },
       { path: '*', component: () => import('pages/Error404.vue') }
     ]
   },

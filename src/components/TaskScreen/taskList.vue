@@ -4,7 +4,7 @@
       <q-card>
         <q-card-section>
           <div class="text-h6 text-center text-primary">
-            Gerenciamento de Projetos
+            Gerenciamento de Tarefas
           </div>
         </q-card-section>
         <q-table
