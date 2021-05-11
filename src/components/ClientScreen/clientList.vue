@@ -255,7 +255,14 @@ export default {
   },
   methods: {
     exportTable() {
-      const header = ["Nome", "Email", "Cnpj", "Empresa", "Departmento", "Phone"];
+      const header = [
+        "Nome",
+        "Email",
+        "Cnpj",
+        "Empresa",
+        "Departmento",
+        "Phone"
+      ];
       const content = this.data.map(row => {
         return `\r\n"${row.name}", "${row.email}", "${row.cnpj}", "${row.company}", "${row.department}", "${row.phone}"`;
       });

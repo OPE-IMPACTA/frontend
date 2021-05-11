@@ -4,7 +4,7 @@
       <q-card>
         <q-card-section>
           <div class="text-h6 text-center text-primary">
-            Gerenciamento de Usuários
+            Gerenciamento de projetos
           </div>
         </q-card-section>
         <q-table
@@ -23,7 +23,7 @@
               rounded
               @click="showCreatProject"
               icon="add"
-              label="Novo usuário"
+              label="Novo projeto"
               class="bg-primary text-accent"
             />
             <q-btn
@@ -196,7 +196,7 @@ export default {
         {
           name: "user",
           required: true,
-          label: "Usuário",
+          label: "Projetos",
           align: "left",
           field: "user",
           sortable: true
@@ -204,7 +204,7 @@ export default {
         {
           name: "client",
           align: "left",
-          label: "Cliente",
+          label: "Clientes",
           field: "client",
           sortable: true
         },
@@ -240,15 +240,13 @@ export default {
   },
   methods: {
     exportTable() {
-      const header = ["Nome", "Email", "Admin"];
+      const header = ["Projetos", "Clientes", "Descrição"];
       const content = this.data.map(row => {
-        return `\r\n"${row.name}", "${row.email}", "${
-          row.group === "admin" ? "Sim" : "Não"
-        }"`;
+        return `\r\n"${row.project}", "${row.client}", "${row.description}"`;
       });
       const result = `"${header.join('","')}"\r\n${content}`;
 
-      const status = exportFile("usuarios-management.csv", result, "text/csv");
+      const status = exportFile("projetos-management.csv", result, "text/csv");
 
       if (status !== true) {
         this.$q.notify({
@@ -315,7 +313,7 @@ export default {
         });
 
       const data = filter
-        ? this.data.filter(row => row.title.includes(filter))
+        ? this.data.filter(row => row.user.includes(filter))
         : this.data.slice();
 
       // handle sortBy
@@ -323,8 +321,8 @@ export default {
         const sortFn =
           sortBy === "desc"
             ? descending
-              ? (a, b) => (a.name > b.name ? -1 : a.name < b.name ? 1 : 0)
-              : (a, b) => (a.name > b.name ? 1 : a.name < b.name ? -1 : 0)
+              ? (a, b) => (a.user > b.user ? -1 : a.user < b.user ? 1 : 0)
+              : (a, b) => (a.user > b.user ? 1 : a.user < b.user ? -1 : 0)
             : descending
             ? (a, b) => parseFloat(b[sortBy]) - parseFloat(a[sortBy])
             : (a, b) => parseFloat(a[sortBy]) - parseFloat(b[sortBy]);
@@ -335,10 +333,9 @@ export default {
     },
 
     getRowsNumberCount(filter) {
-
       let count = 0;
       this.data.forEach(treat => {
-        if (treat.name.includes(filter)) {
+        if (treat.user.includes(filter)) {
           ++count;
         }
       });
@@ -366,7 +363,7 @@ export default {
     getDelete(item) {
       this.$swal({
         title: "Atenção!!",
-        text: "Tem certeza que deseja deletar o usuário ?",
+        text: "Tem certeza que deseja deletar o projetos ?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#d6303e",
@@ -388,7 +385,7 @@ export default {
           if (response.status == 200) {
             this.$swal(
               "Deletado!",
-              "O usuário foi deletado com sucesso!",
+              "O projetos foi deletado com sucesso!",
               "success"
             );
             this.refreshProjects();

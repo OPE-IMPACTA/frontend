@@ -44,7 +44,8 @@ export default defineComponent({
   components: { ProjectManagement },
   data() {
     return {
-      group_id: this.editItem.group_id
+      user_id: this.editItem.user_id,
+      client_id: this.editItem.client_id
     };
   },
 
@@ -97,11 +98,11 @@ export default defineComponent({
 
     buildDataUpdate() {
       let data = {};
-
+      
       data = {
         id: this.editItem._id,
-        user_id: this.editItem.user_id,
-        client_id: this.editItem.client_id,
+        user_id: this.editItem.user.value || this.editItem.user_id,
+        client_id: this.editItem.client.value || this.editItem.client_id,
         description: this.editItem.description,
       };
 
