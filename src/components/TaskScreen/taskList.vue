@@ -197,7 +197,7 @@ export default {
           required: true,
           label: "Projeto",
           align: "left",
-          field: "user",
+          field: "project",
           sortable: true
         },
         {
@@ -205,6 +205,13 @@ export default {
           align: "left",
           label: "Usuário",
           field: "user",
+          sortable: true
+        },
+        {
+          name: "client",
+          align: "left",
+          label: "Cliente",
+          field: "client",
           sortable: true
         },
         {
@@ -261,13 +268,13 @@ export default {
   },
   methods: {
     exportTable() {
-      const header = ["Projetos", "Usuários", "Descrição", "Data ínicio", "Data final", "Hora"];
+      const header = ["Projetos", "Usuários", "Cliente", "Descrição", "Data ínicio", "Data final", "Hora"];
       const content = this.data.map(row => {
-        return `\r\n"${row.project}", "${row.user}", "${row.description}", "${row.startDate}", "${row.startEnd}", ${row.hours}`;
+        return `\r\n"${row.project}", "${row.user}", "${row.client}", "${row.description}", "${row.startDate}", "${row.startEnd}", ${row.hours}`;
       });
       const result = `"${header.join('","')}"\r\n${content}`;
 
-      const status = exportFile("projetos-management.csv", result, "text/csv");
+      const status = exportFile("tasks-management.csv", result, "text/csv");
 
       if (status !== true) {
         this.$q.notify({
@@ -334,7 +341,7 @@ export default {
         });
 
       const data = filter
-        ? this.data.filter(row => row.user.includes(filter))
+        ? this.data.filter(row => row.description.includes(filter))
         : this.data.slice();
 
       // handle sortBy
@@ -342,8 +349,8 @@ export default {
         const sortFn =
           sortBy === "desc"
             ? descending
-              ? (a, b) => (a.user > b.user ? -1 : a.user < b.user ? 1 : 0)
-              : (a, b) => (a.user > b.user ? 1 : a.user < b.user ? -1 : 0)
+              ? (a, b) => (a.description > b.description ? -1 : a.description < b.description ? 1 : 0)
+              : (a, b) => (a.description > b.description ? 1 : a.description < b.description ? -1 : 0)
             : descending
             ? (a, b) => parseFloat(b[sortBy]) - parseFloat(a[sortBy])
             : (a, b) => parseFloat(a[sortBy]) - parseFloat(b[sortBy]);
@@ -356,7 +363,7 @@ export default {
     getRowsNumberCount(filter) {
       let count = 0;
       this.data.forEach(treat => {
-        if (treat.user.includes(filter)) {
+        if (treat.description.includes(filter)) {
           ++count;
         }
       });
@@ -401,12 +408,12 @@ export default {
     deleteUser(item) {
       const userId = item._id;
       this.$axios
-        .delete("/projects/" + userId)
+        .delete("/tasks/" + userId)
         .then(response => {
           if (response.status == 200) {
             this.$swal(
               "Deletado!",
-              "O projetos foi deletado com sucesso!",
+              "A tarefa foi deletado com sucesso!",
               "success"
             );
             this.refreshProjects();
