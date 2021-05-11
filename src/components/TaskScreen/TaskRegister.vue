@@ -66,6 +66,7 @@ export default defineComponent({
         showLoaderOnConfirm: true
       }).then(result => {
         if (result.isConfirmed) {
+
           const data = {
             project_id: this.editItem.project.value,
             user_id: this.editItem.user.value,

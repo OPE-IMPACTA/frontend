@@ -4,6 +4,18 @@
       <q-item-section>
         <q-select
           outlined
+          v-model="editItem.project"
+          :options="projects"
+          label="Projetos"
+          lazy-rules
+          :rules="[v => !!v || 'Projeto obrigatório']"
+        />
+      </q-item-section>
+    </q-item>
+    <q-item>
+      <q-item-section>
+        <q-select
+          outlined
           v-model="editItem.user"
           :options="users"
           label="Usuários"
@@ -14,13 +26,69 @@
     </q-item>
     <q-item>
       <q-item-section>
-        <q-select
+        <div style="max-width: 250px">
+          <label>Data ínicio</label>
+          <q-input
+            filled
+            v-model="editItem.startDate"
+            mask="date"
+            :rules="[v => !!v || 'Descrição obrigatório']"
+          >
+            <template v-slot:append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy
+                  ref="qDateProxy"
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
+                  <q-date v-model="editItem.startDate">
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </div>
+      </q-item-section>
+      <q-item-section>
+        <div style="max-width: 250px">
+          <label>Data ínicio</label>
+          <q-input
+            filled
+            v-model="editItem.endDate"
+            mask="date"
+            :rules="[v => !!v || 'Descrição obrigatório']"
+          >
+            <template v-slot:append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy
+                  ref="qDateProxy"
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
+                  <q-date v-model="editItem.endDate">
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </div>
+      </q-item-section>
+    </q-item>
+    <q-item>
+      <q-item-section>
+        <q-input
           outlined
-          v-model="editItem.client"
-          :options="clients"
-          label="Clientes"
+          v-model="editItem.hours"
+          type="number"
+          label="Horas"
           lazy-rules
-          :rules="[v => !!v || 'Clientes obrigatório']"
+          :rules="[v => !!v || 'Horas obrigatório']"
         />
       </q-item-section>
     </q-item>
@@ -41,10 +109,15 @@
 
 <script>
 import { defineComponent } from "@vue/composition-api";
+import { date } from "quasar";
+
 const defaultItem = {
+  project: "",
   user: "",
-  client: "",
-  description: ""
+  description: "",
+  startDate: "",
+  endDate: "",
+  hours: ""
 };
 
 export default defineComponent({
@@ -56,8 +129,10 @@ export default defineComponent({
     return {
       users: [],
       user: "",
-      clients: [],
-      client: ""
+      projects: [],
+      project: "",
+      startDate: date.formatDate(Date.now(), "YYYY/MM/DD"),
+      endDate: date.formatDate(Date.now(), "YYYY/MM/DD")
     };
   },
   mounted() {
@@ -85,16 +160,16 @@ export default defineComponent({
         });
       });
 
-      this.$axios
-      .get("/clients")
+    this.$axios
+      .get("/projects")
       .then(({ data }) => {
         data.data.forEach(item => {
-          this.clients.push({ value: item._id, label: item.name });
+          this.projects.push({ value: item._id, label: item.description });
         });
       })
       .catch(() => {
         this.$swal({
-          title: "Erro ao buscar grupos!",
+          title: "Erro ao buscar projetos!",
           text: "Entre em contato com o suporte",
           icon: "error",
           showConfirmButton: true
@@ -107,14 +182,17 @@ export default defineComponent({
         this.editItem = Object.assign({}, this.defaultItem);
         this.resetForm();
         this.editedIndex = -1;
-        this.$emit("hide_create_project", { show: false, reset: false });
+        this.$emit("hide_create_task", { show: false, reset: false });
       }, 300);
     },
 
     resetForm() {
-      defaultItem.user = "";
-      defaultItem.client = "";
-      defaultItem.description = "";
+      defaultItem.project = "",
+      defaultItem.user = "",
+      defaultItem.description = "",
+      defaultItem.startDate = "",
+      defaultItem.endDate = "",
+      defaultItem.hours = "";
     }
   }
 });
