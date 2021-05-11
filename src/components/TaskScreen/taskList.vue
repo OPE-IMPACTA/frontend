@@ -161,7 +161,7 @@
 </template>
 
 <script>
-import { exportFile } from "quasar";
+import { exportFile, date } from "quasar";
 const defaultItem = {
   project_id: "",
   user_id: "",
@@ -218,22 +218,23 @@ export default {
           name: "startDate",
           align: "left",
           label: "Data ínicio",
-          field: "startDate",
-          sortable: true
+          sortable: true,
+          field: row => date.formatDate(row.startDate, 'DD/MM/YYYY'),
         },
         {
           name: "endDate",
           align: "left",
           label: "Data final",
           field: "endDate",
-          sortable: true
+          sortable: true,
+          field: row => date.formatDate(row.startDate, 'DD/MM/YYYY hh:ii'),
         },
         {
           name: "hours",
           align: "left",
           label: "Hora",
           field: "hours",
-          sortable: true
+          sortable: true,
         },
         { name: "action", align: "center", label: "Ações", field: "actions" }
       ],
