@@ -17,7 +17,7 @@ import ProjectUpdate from '../../components/ProjectScreen/projectUpdate.vue'
 import { defineComponent } from '@vue/composition-api'
 
 export default defineComponent({
-  name: 'ClientManager',
+  name: 'PeojectManager',
   components: { ProjectList, ProjectUpdate, ProjectRegister },
   data () {
     return {

@@ -4,7 +4,7 @@
       <q-card>
         <q-card-section>
           <div class="text-h6 text-center text-primary">
-            Gerenciamento de Projetos
+            Gerenciamento de Usuários
           </div>
         </q-card-section>
         <q-table
@@ -21,9 +21,9 @@
           <template v-slot:top-left>
             <q-btn
               rounded
-              @click="showCreatProjects"
+              @click="showCreatProject"
               icon="add"
-              label="Novo Projeto"
+              label="Novo usuário"
               class="bg-primary text-accent"
             />
             <q-btn
@@ -163,10 +163,13 @@
 <script>
 import { exportFile } from "quasar";
 const defaultItem = {
-  name: "",
   client: "",
-  descriptio: "",
-  status: ""
+  client_id: "",
+  description: "",
+  status: "",
+  user: "",
+  user_id: "",
+  id: ""
 };
 
 export default {
@@ -185,16 +188,17 @@ export default {
     return {
       filter: "",
       loading: false,
+      group: "",
       show_form: false,
       editedItem: defaultItem,
       mode: "list",
       columns: [
         {
-          name: "name",
+          name: "user",
           required: true,
-          label: "Nome",
+          label: "Usuário",
           align: "left",
-          field: "name",
+          field: "user",
           sortable: true
         },
         {
@@ -209,13 +213,6 @@ export default {
           align: "left",
           label: "Descrição",
           field: "description",
-          sortable: true
-        },
-        {
-          name: "status",
-          align: "left",
-          label: "Status",
-          field: "status",
           sortable: true
         },
         { name: "action", align: "center", label: "Ações", field: "actions" }
@@ -235,7 +232,7 @@ export default {
     ) {
       this.$router.push({ path: "/" });
     }
-
+    // get initial data from server (1st page)
     this.onRequest({
       pagination: this.pagination,
       filter: undefined
@@ -243,9 +240,11 @@ export default {
   },
   methods: {
     exportTable() {
-      const header = ["Nome", "Email", "Cnpj", "Empresa", "Departmento", "Phone"];
+      const header = ["Nome", "Email", "Admin"];
       const content = this.data.map(row => {
-        return `\r\n"${row.name}", "${row.email}", "${row.cnpj}", "${row.company}", "${row.department}", "${row.phone}"`;
+        return `\r\n"${row.name}", "${row.email}", "${
+          row.group === "admin" ? "Sim" : "Não"
+        }"`;
       });
       const result = `"${header.join('","')}"\r\n${content}`;
 
@@ -319,6 +318,7 @@ export default {
         ? this.data.filter(row => row.title.includes(filter))
         : this.data.slice();
 
+      // handle sortBy
       if (sortBy) {
         const sortFn =
           sortBy === "desc"
@@ -335,6 +335,7 @@ export default {
     },
 
     getRowsNumberCount(filter) {
+
       let count = 0;
       this.data.forEach(treat => {
         if (treat.name.includes(filter)) {
@@ -344,7 +345,7 @@ export default {
       return count;
     },
 
-    showCreatProjects() {
+    showCreatProject() {
       this.editedItem = defaultItem;
       this.$emit("showCreate", true);
     },
@@ -365,7 +366,7 @@ export default {
     getDelete(item) {
       this.$swal({
         title: "Atenção!!",
-        text: "Tem certeza que deseja deletar o projeto ?",
+        text: "Tem certeza que deseja deletar o usuário ?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#d6303e",
@@ -374,20 +375,20 @@ export default {
         confirmButtonText: "Deletar"
       }).then(result => {
         if (result.isConfirmed) {
-          this.deleteProject(item);
+          this.deleteUser(item);
         }
       });
     },
 
-    deleteProject(item) {
-      const projectId = item._id;
+    deleteUser(item) {
+      const userId = item._id;
       this.$axios
-        .delete("/projects/" + projectId)
+        .delete("/projects/" + userId)
         .then(response => {
           if (response.status == 200) {
             this.$swal(
               "Deletado!",
-              "O projeto foi deletado com sucesso!",
+              "O usuário foi deletado com sucesso!",
               "success"
             );
             this.refreshProjects();

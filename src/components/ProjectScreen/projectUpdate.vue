@@ -40,7 +40,7 @@ export default defineComponent({
   props: {
     editItem: {}
   },
-  name: "ClientUpdate",
+  name: "ProjectUpdate",
   components: { ProjectManagement },
   data() {
     return {
@@ -64,7 +64,7 @@ export default defineComponent({
 
       let msg = "";
       this.$swal({
-        title: "Atualizar Cliente ?",
+        title: "Atualizar Projeto ?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Confirmar",
@@ -72,7 +72,7 @@ export default defineComponent({
       }).then(result => {
         if (result.isConfirmed) {
           this.$axios
-            .put(`clients/${data.id}`, data)
+            .put(`projects/${data.id}`, data)
             .then(response => {
               msg = response.data.Message;
 
@@ -97,14 +97,12 @@ export default defineComponent({
 
     buildDataUpdate() {
       let data = {};
+
       data = {
         id: this.editItem._id,
-        name: this.editItem.name,
-        email: this.editItem.email,
-        cnpj: this.editItem.cnpj,
-        company: this.editItem.company,
-        department: this.editItem.department,
-        phone: this.editItem.phone
+        user_id: this.editItem.user_id,
+        client_id: this.editItem.client_id,
+        description: this.editItem.description,
       };
 
       return data;
