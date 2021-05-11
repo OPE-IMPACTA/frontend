@@ -4,7 +4,7 @@
       <q-card>
         <q-card-section>
           <div class="text-h6 text-center text-primary">
-            Gerenciamento de Clientes
+            Gerenciamento de Projetos
           </div>
         </q-card-section>
         <q-table
@@ -21,9 +21,9 @@
           <template v-slot:top-left>
             <q-btn
               rounded
-              @click="showCreatClient"
+              @click="showCreatProjects"
               icon="add"
-              label="Novo Cliente"
+              label="Novo Projeto"
               class="bg-primary text-accent"
             />
             <q-btn
@@ -33,7 +33,7 @@
               class="q-ml-sm bg-secondary text-primary"
               icon="refresh"
               :disable="loading"
-              @click="refreshClients()"
+              @click="refreshProjects()"
             />
           </template>
 
@@ -164,17 +164,19 @@
 import { exportFile } from "quasar";
 const defaultItem = {
   name: "",
-  email: ""
+  client: "",
+  descriptio: "",
+  status: ""
 };
 
 export default {
   props: {
-    resetClients: Boolean
+    resetProjects: Boolean
   },
   watch: {
-    resetClients: function(val) {
-      if (this.resetClients) {
-        this.refreshClients();
+    resetProjects: function(val) {
+      if (this.resetProjects) {
+        this.refreshProjects();
         this.$emit("updateReset", false);
       }
     }
@@ -196,38 +198,24 @@ export default {
           sortable: true
         },
         {
-          name: "email",
+          name: "client",
           align: "left",
-          label: "Email",
-          field: "email",
+          label: "Cliente",
+          field: "client",
           sortable: true
         },
         {
-          name: "cnpj",
+          name: "description",
           align: "left",
-          label: "Cnpj",
-          field: "cnpj",
+          label: "Descrição",
+          field: "description",
           sortable: true
         },
         {
-          name: "company",
+          name: "status",
           align: "left",
-          label: "Empresa",
-          field: "company",
-          sortable: true
-        },
-        {
-          name: "department",
-          align: "left",
-          label: "Departmento",
-          field: "department",
-          sortable: true
-        },
-        {
-          name: "phone",
-          align: "left",
-          label: "Phone",
-          field: "phone",
+          label: "Status",
+          field: "status",
           sortable: true
         },
         { name: "action", align: "center", label: "Ações", field: "actions" }
@@ -312,7 +300,7 @@ export default {
       };
 
       this.$axios
-        .get("clients", config)
+        .get("projects", config)
         .then(response => {
           this.data = response.data.data;
         })
@@ -356,7 +344,7 @@ export default {
       return count;
     },
 
-    showCreatClient() {
+    showCreatProjects() {
       this.editedItem = defaultItem;
       this.$emit("showCreate", true);
     },
@@ -377,7 +365,7 @@ export default {
     getDelete(item) {
       this.$swal({
         title: "Atenção!!",
-        text: "Tem certeza que deseja deletar o cliente ?",
+        text: "Tem certeza que deseja deletar o projeto ?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#d6303e",
@@ -386,23 +374,23 @@ export default {
         confirmButtonText: "Deletar"
       }).then(result => {
         if (result.isConfirmed) {
-          this.deleteClient(item);
+          this.deleteProject(item);
         }
       });
     },
 
-    deleteClient(item) {
-      const clientId = item._id;
+    deleteProject(item) {
+      const projectId = item._id;
       this.$axios
-        .delete("/clients/" + clientId)
+        .delete("/projects/" + projectId)
         .then(response => {
           if (response.status == 200) {
             this.$swal(
               "Deletado!",
-              "O cliente foi deletado com sucesso!",
+              "O projeto foi deletado com sucesso!",
               "success"
             );
-            this.refreshClients();
+            this.refreshProjects();
           }
         })
         .catch(e => {
@@ -410,7 +398,7 @@ export default {
         });
     },
 
-    refreshClients() {
+    refreshProjects() {
       this.onRequest({ filter: "", pagination: this.pagination });
     }
   }

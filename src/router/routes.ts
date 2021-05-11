@@ -15,6 +15,7 @@ const routes: RouteConfig[] = [
       { path: '/ResetPassword', component: () => import('pages/RecoverPassword/ResetPassword.vue') },
       { path: '/usuarios/gerenciar', component: () => import('pages/UserScreen/UserManager.vue') },
       { path: '/clientes/gerenciar', component: () => import('pages/ClientScreen/ClientManager.vue') },
+      { path: '/projetos/gerenciar', component: () => import('pages/ProjectsScreen/ProjectManager.vue') },
       { path: '*', component: () => import('pages/Error404.vue') }
     ]
   },
