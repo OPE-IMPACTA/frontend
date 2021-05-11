@@ -234,7 +234,7 @@ export default {
           label: "Data final",
           field: "endDate",
           sortable: true,
-          field: row => date.formatDate(row.startDate, 'DD/MM/YYYY hh:ii'),
+          field: row => date.formatDate(row.startDate, 'DD/MM/YYYY'),
         },
         {
           name: "hours",

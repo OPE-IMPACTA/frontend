@@ -104,6 +104,7 @@ export default defineComponent({
         user_id: this.editItem.user.value || this.editItem.user_id,
         client_id: this.editItem.client.value || this.editItem.client_id,
         description: this.editItem.description,
+        name: this.editItem.name,
       };
 
       return data;

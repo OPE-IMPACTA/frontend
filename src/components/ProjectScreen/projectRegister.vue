@@ -39,7 +39,8 @@ import { defineComponent } from "@vue/composition-api";
 const defaultItem = {
   user: "",
   client: "",
-  description: ""
+  description: "",
+  name: ""
 };
 
 export default defineComponent({
@@ -67,6 +68,7 @@ export default defineComponent({
             user_id: this.editItem.user.value,
             client_id: this.editItem.client.value,
             description: this.editItem.description,
+            name: this.editItem.name,
             status: "Novo"
           };
 
@@ -112,6 +114,7 @@ export default defineComponent({
       defaultItem.user = "";
       defaultItem.client = "";
       defaultItem.description = "";
+      defaultItem.name = "";
     },
 
     hide() {

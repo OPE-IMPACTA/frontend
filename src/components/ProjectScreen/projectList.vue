@@ -194,6 +194,14 @@ export default {
       mode: "list",
       columns: [
         {
+          name: "name",
+          required: true,
+          label: "Nome",
+          align: "left",
+          field: "name",
+          sortable: true
+        },
+        {
           name: "user",
           required: true,
           label: "Usuários",
@@ -240,9 +248,9 @@ export default {
   },
   methods: {
     exportTable() {
-      const header = ["Projetos", "Clientes", "Descrição"];
+      const header = ["name", "Usuários", "Clientes", "Descrição"];
       const content = this.data.map(row => {
-        return `\r\n"${row.project}", "${row.client}", "${row.description}"`;
+        return `\r\n${row.name}", "${row.project}", "${row.client}", "${row.description}"`;
       });
       const result = `"${header.join('","')}"\r\n${content}`;
 

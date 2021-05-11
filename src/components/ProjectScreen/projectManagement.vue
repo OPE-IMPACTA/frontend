@@ -2,6 +2,18 @@
   <div>
     <q-item>
       <q-item-section>
+        <q-input
+          outlined
+          v-model="editItem.name"
+          type="text"
+          label="Nome"
+          lazy-rules
+          :rules="[v => !!v || 'Nome obrigatório']"
+        />
+      </q-item-section>
+    </q-item>
+    <q-item>
+      <q-item-section>
         <q-select
           outlined
           v-model="editItem.user"
@@ -44,7 +56,8 @@ import { defineComponent } from "@vue/composition-api";
 const defaultItem = {
   user: "",
   client: "",
-  description: ""
+  description: "",
+  name: ""
 };
 
 export default defineComponent({
@@ -85,7 +98,7 @@ export default defineComponent({
         });
       });
 
-      this.$axios
+    this.$axios
       .get("/clients")
       .then(({ data }) => {
         data.data.forEach(item => {
@@ -115,6 +128,7 @@ export default defineComponent({
       defaultItem.user = "";
       defaultItem.client = "";
       defaultItem.description = "";
+      defaultItem.name = "";
     }
   }
 });
