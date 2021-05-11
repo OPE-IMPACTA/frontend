@@ -27,8 +27,8 @@
     <q-item>
       <q-item-section>
         <div style="max-width: 250px">
-          <label>Data ínicio</label>
           <q-input
+            placeholder="Data ínicio"
             filled
             v-model="editItem.startDate"
             mask="date"
@@ -54,8 +54,8 @@
       </q-item-section>
       <q-item-section>
         <div style="max-width: 250px">
-          <label>Data ínicio</label>
           <q-input
+            placeholder="Data Final"
             filled
             v-model="editItem.endDate"
             mask="date"
@@ -187,12 +187,12 @@ export default defineComponent({
     },
 
     resetForm() {
-      defaultItem.project = "",
-      defaultItem.user = "",
-      defaultItem.description = "",
-      defaultItem.startDate = "",
-      defaultItem.endDate = "",
-      defaultItem.hours = "";
+      (defaultItem.project = ""),
+        (defaultItem.user = ""),
+        (defaultItem.description = ""),
+        (defaultItem.startDate = ""),
+        (defaultItem.endDate = ""),
+        (defaultItem.hours = "");
     }
   }
 });
