@@ -3,7 +3,7 @@
     <div class="col-md-6">
       <q-card>
         <q-card-section>
-          <div class="text-h5 text-primary" align="center">
+          <div class="text-h5 text-primary text-center">
             Cadastrar usuário
           </div>
         </q-card-section>
@@ -12,7 +12,7 @@
             <q-card-section>
               <UserManagement :password-rules="passwordRules" :confirm-password-rules="confirmPasswordRules" :editItem="editItem"></UserManagement>
             </q-card-section>
-            <div class="" align="right">
+            <div class="text-right">
               <q-btn @click="cancelAdd" class="q-ma-md" label="Cancelar"></q-btn>
               <q-btn label="Salvar" type="submit" class="q-ma-md" color="primary"/>
             </div>
@@ -24,19 +24,19 @@
 </template>
 
 <script>
-import UserManagement from "./userManagement.vue"
+import UserManagement from './userManagement.vue'
 import { defineComponent } from '@vue/composition-api'
 
 const defaultItem = {
-  name: '' ,
-  email: '' ,
+  name: '',
+  email: '',
   password: '',
   confirmPassword: '',
   group_id: ''
 }
 
 export default defineComponent({
-  name: "UserRegister",
+  name: 'UserRegister',
   components: { UserManagement },
   data () {
     return {
@@ -54,11 +54,10 @@ export default defineComponent({
   },
 
   methods: {
-    onSubmit() {
+    onSubmit () {
+      this.editItem.group_id = this.editItem.group.value
 
-      this.editItem.group_id = this.editItem.group.value;
-
-      this.$swal({
+      void this.$swal({
         title: 'Cadastrar Usuário ?',
         icon: 'warning',
         showCancelButton: true,
@@ -66,32 +65,30 @@ export default defineComponent({
         cancelButtonText: 'Cancelar',
         showLoaderOnConfirm: true
       }).then((result) => {
-
         if (result.isConfirmed) {
-
           this.$axios.post('users', this.editItem).then(response => {
-            this.$swal({
+            void this.$swal({
               title: response.data.Message,
               icon: 'success',
               showConfirmButton: true
             })
-            this.resetForm();
-            this.$emit('showCreate', false);
+            this.resetForm()
+            this.$emit('showCreate', false)
           })
-          .catch(error => {
-            this.$swal({
-              title: 'Erro ao cadastrar !',
-              text: 'Entre em contato com o suporte',
-              icon: 'error',
-              showConfirmButton: true
+            .catch(() => {
+              void this.$swal({
+                title: 'Erro ao cadastrar !',
+                text: 'Entre em contato com o suporte',
+                icon: 'error',
+                showConfirmButton: true
+              })
             })
-          });
         }
       })
     },
 
     cancelAdd () {
-      this.$swal({
+      void this.$swal({
         title: 'Cancelar cadastro ?',
         icon: 'warning',
         showCancelButton: true,
@@ -99,21 +96,21 @@ export default defineComponent({
         confirmButtonText: 'Cancelar'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.resetForm();
-          this.$emit('showCreate', false);
+          this.resetForm()
+          this.$emit('showCreate', false)
         }
       })
     },
 
     resetForm () {
-      defaultItem.name = '';
-      defaultItem.email = '';
-      defaultItem.password = '';
-      defaultItem.confirmPassword = '';
-      defaultItem.group_id = '';
+      defaultItem.name = ''
+      defaultItem.email = ''
+      defaultItem.password = ''
+      defaultItem.confirmPassword = ''
+      defaultItem.group_id = ''
     },
 
-    hide(){
+    hide () {
       this.prompt = false
     }
   }

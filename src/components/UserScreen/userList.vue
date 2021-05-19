@@ -14,7 +14,7 @@
           :columns="columns"
           row-key="_id"
           :loading="loading"
-          :grid="mode == 'grid'"
+          :grid="mode === 'grid'"
           :filter="filter"
           :pagination.sync="pagination"
         >
@@ -105,9 +105,9 @@
                       <q-chip
                         v-if="col.name === 'status'"
                         :color="
-                          props.row.status == 'Active'
+                          props.row.status === 'Active'
                             ? 'green'
-                            : props.row.status == 'Disable'
+                            : props.row.status === 'Disable'
                             ? 'red'
                             : 'grey'
                         "
@@ -115,8 +115,8 @@
                         dense
                         class="text-weight-bolder"
                         square
-                        >{{ col.value }}</q-chip
-                      >
+                        >{{ col.value }}
+                      </q-chip>
                       <q-td
                         class="text-center"
                         v-else-if="col.name === 'action'"
@@ -161,115 +161,115 @@
 </template>
 
 <script>
-import { exportFile } from "quasar";
+import { exportFile } from 'quasar'
 const defaultItem = {
-  name: "",
-  email: "",
+  name: '',
+  email: '',
   group_id: false,
-  password: "",
-  confirmPassword: "",
-  group: ""
-};
+  password: '',
+  confirmPassword: '',
+  group: ''
+}
 
 export default {
   props: {
     resetUsers: Boolean
   },
   watch: {
-    resetUsers: function(val) {
+    resetUsers: function () {
       if (this.resetUsers) {
-        this.refreshUsers();
-        this.$emit("updateReset", false);
+        this.refreshUsers()
+        this.$emit('updateReset', false)
       }
     }
   },
-  data() {
+  data () {
     return {
-      filter: "",
+      filter: '',
       loading: false,
-      group: "",
+      group: '',
       show_form: false,
       editedItem: defaultItem,
-      mode: "list",
+      mode: 'list',
       columns: [
         {
-          name: "name",
+          name: 'name',
           required: true,
-          label: "Nome",
-          align: "left",
-          field: "name",
+          label: 'Nome',
+          align: 'left',
+          field: 'name',
           sortable: true
         },
         {
-          name: "email",
-          align: "left",
-          label: "Email",
-          field: "email",
+          name: 'email',
+          align: 'left',
+          label: 'Email',
+          field: 'email',
           sortable: true
         },
         {
-          name: "group",
-          align: "left",
-          label: "Grupo",
-          field: "group",
+          name: 'group',
+          align: 'left',
+          label: 'Grupo',
+          field: 'group',
           sortable: true
         },
-        { name: "action", align: "center", label: "Ações", field: "actions" }
+        { name: 'action', align: 'center', label: 'Ações', field: 'actions' }
       ],
       data: [],
       pagination: {
         rowsPerPage: 7
       }
-    };
+    }
   },
 
-  mounted() {
+  mounted () {
     if (
       typeof this.$axios.defaults.headers.common.Authorization ===
-        "undefined" ||
-      this.$axios.defaults.headers.common.Authorization === ""
+        'undefined' ||
+      this.$axios.defaults.headers.common.Authorization === ''
     ) {
-      this.$router.push({ path: "/" });
+      this.$router.push({ path: '/' })
     }
     // get initial data from server (1st page)
     this.onRequest({
       pagination: this.pagination,
       filter: undefined
-    });
+    })
   },
   methods: {
-    exportTable() {
-      const header = ["Nome", "Email", "Admin"];
+    exportTable () {
+      const header = ['Nome', 'Email', 'Admin']
       const content = this.data.map(row => {
         return `\r\n"${row.name}", "${row.email}", "${
-          row.group === "admin" ? "Sim" : "Não"
-        }"`;
-      });
-      const result = `"${header.join('","')}"\r\n${content}`;
+          row.group === 'admin' ? 'Sim' : 'Não'
+        }"`
+      })
+      const result = `"${header.join('","')}"\r\n${content}`
 
-      const status = exportFile("usuarios-management.csv", result, "text/csv");
+      const status = exportFile('usuarios-management.csv', result, 'text/csv')
 
       if (status !== true) {
         this.$q.notify({
-          message: "Erro ao fazer o download...",
-          color: "negative",
-          icon: "warning"
-        });
+          message: 'Erro ao fazer o download...',
+          color: 'negative',
+          icon: 'warning'
+        })
       }
     },
 
-    onRequest(props) {
-      const { page, rowsPerPage, sortBy, descending } = props.pagination;
-      const filter = props.filter;
-      this.loading = true;
+    onRequest (props) {
+      const { page, rowsPerPage, sortBy, descending } = props.pagination
+      const filter = props.filter
+      this.loading = true
 
       setTimeout(() => {
-        this.pagination.rowsNumber = this.getRowsNumberCount(filter);
+        this.pagination.rowsNumber = this.getRowsNumberCount(filter)
 
         const fetchCount =
-          rowsPerPage === 0 ? this.pagination.rowsNumber : rowsPerPage;
+          rowsPerPage === 0 ? this.pagination.rowsNumber : rowsPerPage
 
-        const startRow = (page - 1) * rowsPerPage;
+        const startRow = (page - 1) * rowsPerPage
 
         const returnedData = this.fetchFromServer(
           startRow,
@@ -277,139 +277,136 @@ export default {
           filter,
           sortBy,
           descending
-        );
+        )
 
-        this.data.splice(0, this.data.length, ...returnedData);
+        this.data.splice(0, this.data.length, ...returnedData)
 
-        this.pagination.page = page;
-        this.pagination.rowsPerPage = rowsPerPage;
-        this.pagination.sortBy = sortBy;
-        this.pagination.descending = descending;
+        this.pagination.page = page
+        this.pagination.rowsPerPage = rowsPerPage
+        this.pagination.sortBy = sortBy
+        this.pagination.descending = descending
 
-        this.loading = false;
-      }, 1500);
+        this.loading = false
+      }, 1500)
     },
 
-    fetchFromServer(startRow, count, filter, sortBy, descending) {
-      const token = this.$axios.defaults.headers.common["Authorization"];
+    fetchFromServer (startRow, count, filter, sortBy, descending) {
+      const token = this.$axios.defaults.headers.common.Authorization
       const config = {
         headers: { Authorization: token },
         showLoading: false
-      };
+      }
 
       this.$axios
-        .get("users", config)
+        .get('users', config)
         .then(response => {
-          this.data = response.data.data;
+          this.data = response.data.data
         })
         .catch(e => {
           if (e.response.status !== 200 && e.response.status !== 403) {
             this.noti = this.$q.notify({
-              type: "negative",
+              type: 'negative',
               multiline: true,
-              message: "Erro ao carregar dados",
+              message: 'Erro ao carregar dados',
               timeout: 3000
-            });
+            })
           }
-        });
+        })
 
       const data = filter
         ? this.data.filter(row => row.title.includes(filter))
-        : this.data.slice();
+        : this.data.slice()
 
       // handle sortBy
       if (sortBy) {
         const sortFn =
-          sortBy === "desc"
+          sortBy === 'desc'
             ? descending
               ? (a, b) => (a.name > b.name ? -1 : a.name < b.name ? 1 : 0)
               : (a, b) => (a.name > b.name ? 1 : a.name < b.name ? -1 : 0)
             : descending
-            ? (a, b) => parseFloat(b[sortBy]) - parseFloat(a[sortBy])
-            : (a, b) => parseFloat(a[sortBy]) - parseFloat(b[sortBy]);
-        data.sort(sortFn);
+              ? (a, b) => parseFloat(b[sortBy]) - parseFloat(a[sortBy])
+              : (a, b) => parseFloat(a[sortBy]) - parseFloat(b[sortBy])
+        data.sort(sortFn)
       }
 
-      return data.slice(startRow, startRow + count);
+      return data.slice(startRow, startRow + count)
     },
 
-    getRowsNumberCount(filter) {
-
-      let count = 0;
+    getRowsNumberCount (filter) {
+      let count = 0
       this.data.forEach(treat => {
         if (treat.name.includes(filter)) {
-          ++count;
+          ++count
         }
-      });
-      return count;
+      })
+      return count
     },
 
-    showCreatUser() {
-      this.editedItem = defaultItem;
-      this.$emit("showCreate", true);
+    showCreatUser () {
+      this.editedItem = defaultItem
+      this.$emit('showCreate', true)
     },
 
-    editItem(item) {
+    editItem (item) {
       this.editedIndex = this.data.findIndex(
-        (v, i) => v.__index === item.__index
-      );
+        (v) => v.__index === item.__index
+      )
 
-      this.editedItem = Object.assign({}, item);
+      this.editedItem = Object.assign({}, item)
       this.itemUpdate = {
         editItem: this.editedItem,
         show: true
-      };
-      this.$emit("showUpdate", this.itemUpdate);
+      }
+      this.$emit('showUpdate', this.itemUpdate)
     },
 
-    getDelete(item) {
+    getDelete (item) {
       this.$swal({
-        title: "Atenção!!",
-        text: "Tem certeza que deseja deletar o usuário ?",
-        icon: "warning",
+        title: 'Atenção!!',
+        text: 'Tem certeza que deseja deletar o usuário ?',
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#d6303e",
-        cancelButtonColor: "#c4c4c4",
-        cancelButtonText: "Cancelar",
-        confirmButtonText: "Deletar"
+        confirmButtonColor: '#d6303e',
+        cancelButtonColor: '#c4c4c4',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Deletar'
       }).then(result => {
         if (result.isConfirmed) {
-          this.deleteUser(item);
+          this.deleteUser(item)
         }
-      });
+      })
     },
 
-    deleteUser(item) {
-      const userId = item._id;
+    deleteUser (item) {
+      const userId = item._id
       this.$axios
-        .delete("/users/" + userId)
+        .delete('/users/' + userId)
         .then(response => {
-          if (response.status == 200) {
+          if (response.status === 200) {
             this.$swal(
-              "Deletado!",
-              "O usuário foi deletado com sucesso!",
-              "success"
-            );
-            this.refreshUsers();
+              'Deletado!',
+              'O usuário foi deletado com sucesso!',
+              'success'
+            )
+            this.refreshUsers()
           }
         })
-        .catch(e => {
-          this.$swal("Erro!", "Entre em contato com o suporte!", "error");
-        });
+        .catch(() => {
+          this.$swal('Erro!', 'Entre em contato com o suporte!', 'error')
+        })
     },
 
-    refreshUsers() {
-      this.onRequest({ filter: "", pagination: this.pagination });
+    refreshUsers () {
+      this.onRequest({ filter: '', pagination: this.pagination })
     }
   }
-};
+}
 </script>
 
 <style>
 .btn-size-md {
   font-size: 12px;
 }
-span.block {
-  margin-right: 12px;
-}
+
 </style>

@@ -29,7 +29,7 @@
                     label="Email"
                     class="q-ma-sm"
                     color="secondary"
-                    lazy-rules
+                    lazy-rules=""
                     :rules="[
                       val => (val && val.length > 0) || 'Digite o seu Email'
                     ]"
@@ -46,7 +46,7 @@
                     type="password"
                     class="q-ma-sm"
                     color="secondary"
-                    lazy-rules
+                    lazy-rules=""
                     :rules="[
                       val => (val && val.length > 0) || 'Digite sua senha'
                     ]"
@@ -79,72 +79,70 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       email: this.email,
       password: this.password
-    };
+    }
   },
   methods: {
-    loginNotify() {
-      login;
+    loginNotify () {
       this.$q.notify({
-        message: "Login Successful"
-      });
+        message: 'Login Successful'
+      })
     },
-    onSubmit() {
-      this.getLogin();
-    },
-
-    onReset() {
-      this.email = null;
-      this.password = null;
-      this.$refs.loginForm.resetValidation();
+    onSubmit () {
+      this.getLogin()
     },
 
-    getLogin() {
-      let email = this.email;
-      let password = this.password;
+    onReset () {
+      this.email = null
+      this.password = null
+      this.$refs.loginForm.resetValidation()
+    },
+
+    getLogin () {
+      const email = this.email
+      const password = this.password
 
       this.$axios
-        .post("auth/login", {
+        .post('auth/login', {
           email: email,
           password: password
         })
         .then(response => {
-          let userJson = JSON.stringify(response.data);
+          const userJson = JSON.stringify(response.data)
 
-          this.$axios.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${response.headers.authorization}`;
+          this.$axios.defaults.headers.common.Authorization = `Bearer ${response.headers.authorization}`
 
-          localStorage.setItem("token", response.headers.authorization);
-          localStorage.setItem("user", userJson);
+          localStorage.setItem('token', response.headers.authorization)
+          localStorage.setItem('user', userJson)
 
-          this.$router.push({ path: "/home" });
+          this.$router.push({ path: '/home' })
         })
         .catch(e => {
           this.$q.notify({
             message: e.response.data.erro,
-            position: "top",
-            color: "negative",
-            icon: "warning"
-          });
-          this.onReset();
-          return false;
-        });
+            position: 'top',
+            color: 'negative',
+            icon: 'warning'
+          })
+          this.onReset()
+          return false
+        })
     }
   },
-  mounted: function() {
+  mounted: function () {
     if (
-      typeof this.$axios.defaults.headers.common["Authorization"] !==
-        "undefined" &&
-      this.$axios.defaults.headers.common["Authorization"] !== ""
+      typeof this.$axios.defaults.headers.common.Authorization !==
+        'undefined' &&
+      this.$axios.defaults.headers.common.Authorization !== ''
     ) {
-      this.$router.push({ path: "/home" });
+      this.$router.push({ path: '/home' })
     }
 
-    particlesJS("particles-js", {
+    // eslint-disable-next-line no-undef
+    particlesJS('particles-js', {
       particles: {
         number: {
           value: 80,
@@ -154,19 +152,19 @@ export default {
           }
         },
         color: {
-          value: "#ffffff"
+          value: '#ffffff'
         },
         shape: {
-          type: "circle",
+          type: 'circle',
           stroke: {
             width: 0,
-            color: "#000000"
+            color: '#000000'
           },
           polygon: {
             nb_sides: 5
           },
           image: {
-            src: "img/github.svg",
+            src: 'img/github.svg',
             width: 100,
             height: 100
           }
@@ -194,17 +192,17 @@ export default {
         line_linked: {
           enable: true,
           distance: 150,
-          color: "#053ea8",
+          color: '#053ea8',
           opacity: 0.4,
           width: 1
         },
         move: {
           enable: true,
           speed: 4,
-          direction: "none",
+          direction: 'none',
           random: false,
           straight: false,
-          out_mode: "out",
+          out_mode: 'out',
           bounce: false,
           attract: {
             enable: false,
@@ -214,15 +212,15 @@ export default {
         }
       },
       interactivity: {
-        detect_on: "canvas",
+        detect_on: 'canvas',
         events: {
           onhover: {
             enable: true,
-            mode: "grab"
+            mode: 'grab'
           },
           onclick: {
             enable: true,
-            mode: "push"
+            mode: 'push'
           },
           resize: true
         },
@@ -253,9 +251,9 @@ export default {
         }
       },
       retina_detect: true
-    });
+    })
   }
-};
+}
 </script>
 
 <style lang="scss">
@@ -268,10 +266,10 @@ export default {
   background-position: 50% 50%;
 }
 .normal_gradient {
-  background: linear-gradient(145deg, #ffffff);
+  background: linear-gradient(145deg, #ffffff, #ffffff);
 }
 .dark_gradient {
-  background: linear-gradient(145deg, #000000);
+  background: linear-gradient(145deg, #000000, #000000);
 }
 
 </style>

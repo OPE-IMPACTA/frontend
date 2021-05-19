@@ -3,7 +3,7 @@
     <div class="col-md-6">
       <q-card>
         <q-card-section>
-          <div class="text-h5 text-primary" align="center">
+          <div class="text-h5 text-primary text-center">
             Atualizar Projeto
           </div>
         </q-card-section>
@@ -12,7 +12,7 @@
             <q-card-section>
               <ProjectManagement :editItem="editItem"></ProjectManagement>
             </q-card-section>
-            <div class="" align="right">
+            <div class="text-right">
               <q-btn
                 @click="cancelAdd"
                 class="q-ma-md"
@@ -33,96 +33,96 @@
 </template>
 
 <script>
-import ProjectManagement from "./projectManagement.vue";
-import { defineComponent } from "@vue/composition-api";
+import ProjectManagement from './projectManagement.vue'
+import { defineComponent } from '@vue/composition-api'
 
 export default defineComponent({
   props: {
     editItem: {}
   },
-  name: "ProjectUpdate",
+  name: 'ProjectUpdate',
   components: { ProjectManagement },
-  data() {
+  data () {
     return {
       user_id: this.editItem.user_id,
       client_id: this.editItem.client_id
-    };
+    }
   },
 
-  mounted() {
+  mounted () {
     if (
       typeof this.$axios.defaults.headers.common.Authorization ===
-        "undefined" ||
-      this.$axios.defaults.headers.common.Authorization === ""
+        'undefined' ||
+      this.$axios.defaults.headers.common.Authorization === ''
     ) {
-      this.$router.push({ path: "/" });
+      void this.$router.push({ path: '/' })
     }
   },
 
   methods: {
-    onSubmit() {
-      let data = this.buildDataUpdate();
+    onSubmit () {
+      const data = this.buildDataUpdate()
 
-      let msg = "";
-      this.$swal({
-        title: "Atualizar Projeto ?",
-        icon: "warning",
+      let msg = ''
+      void this.$swal({
+        title: 'Atualizar Projeto ?',
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: "Confirmar",
+        confirmButtonText: 'Confirmar',
         showLoaderOnConfirm: true
       }).then(result => {
         if (result.isConfirmed) {
           this.$axios
             .put(`projects/${data.id}`, data)
             .then(response => {
-              msg = response.data.Message;
+              msg = response.data.Message
 
-              this.$swal({
+              void this.$swal({
                 title: msg,
-                icon: "success",
+                icon: 'success',
                 showConfirmButton: true
-              });
-              this.$emit("showUpdate", { show: false, editItem: {} });
+              })
+              this.$emit('showUpdate', { show: false, editItem: {} })
             })
-            .catch(error => {
-              this.$swal({
-                title: "Erro ao cadastrar !",
-                text: "Entre em contato com o suporte",
-                icon: "error",
+            .catch(() => {
+              void this.$swal({
+                title: 'Erro ao cadastrar !',
+                text: 'Entre em contato com o suporte',
+                icon: 'error',
                 showConfirmButton: true
-              });
-            });
+              })
+            })
         }
-      });
+      })
     },
 
-    buildDataUpdate() {
-      let data = {};
-      
+    buildDataUpdate () {
+      let data = {}
+
       data = {
         id: this.editItem._id,
         user_id: this.editItem.user.value || this.editItem.user_id,
         client_id: this.editItem.client.value || this.editItem.client_id,
         description: this.editItem.description,
-        name: this.editItem.name,
-      };
+        name: this.editItem.name
+      }
 
-      return data;
+      return data
     },
 
-    cancelAdd() {
-      this.$swal({
-        title: "Cancelar edição ?",
-        icon: "warning",
+    cancelAdd () {
+      void this.$swal({
+        title: 'Cancelar edição ?',
+        icon: 'warning',
         showCancelButton: true,
-        cancelButtonText: "Voltar",
-        confirmButtonText: "Cancelar"
+        cancelButtonText: 'Voltar',
+        confirmButtonText: 'Cancelar'
       }).then(result => {
         if (result.isConfirmed) {
-          this.$emit("showUpdate", { show: false, editItem: {} });
+          this.$emit('showUpdate', { show: false, editItem: {} })
         }
-      });
+      })
     }
   }
-});
+})
 </script>

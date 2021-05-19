@@ -3,7 +3,7 @@
     <div class="col-md-6">
       <q-card>
         <q-card-section>
-          <div class="text-h5 text-primary" align="center">
+          <div class="text-h5 text-primary text-center">
             Atualizar cliente
           </div>
         </q-card-section>
@@ -12,7 +12,7 @@
             <q-card-section>
               <ClientManagement :editItem="editItem"></ClientManagement>
             </q-card-section>
-            <div class="" align="right">
+            <div class="text-right">
               <q-btn
                 @click="cancelAdd"
                 class="q-ma-md"
@@ -33,70 +33,71 @@
 </template>
 
 <script>
-import ClientManagement from "./clientManagement.vue";
-import { defineComponent } from "@vue/composition-api";
+import ClientManagement from './clientManagement.vue'
+import { defineComponent } from '@vue/composition-api'
 
 export default defineComponent({
   props: {
     editItem: {}
   },
-  name: "ClientUpdate",
+  name: 'ClientUpdate',
   components: { ClientManagement },
-  data() {
+  data () {
     return {
       group_id: this.editItem.group_id
-    };
+    }
   },
 
-  mounted() {
+  mounted () {
     if (
       typeof this.$axios.defaults.headers.common.Authorization ===
-        "undefined" ||
-      this.$axios.defaults.headers.common.Authorization === ""
+        'undefined' ||
+      this.$axios.defaults.headers.common.Authorization === ''
     ) {
-      this.$router.push({ path: "/" });
+      void this.$router.push({ path: '/' })
     }
   },
 
   methods: {
-    onSubmit() {
-      let data = this.buildDataUpdate();
+    onSubmit () {
+      const data = this.buildDataUpdate()
 
-      let msg = "";
-      this.$swal({
-        title: "Atualizar Cliente ?",
-        icon: "warning",
+      let msg = ''
+      void this.$swal({
+        title: 'Atualizar Cliente ?',
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: "Confirmar",
+        confirmButtonText: 'Confirmar',
         showLoaderOnConfirm: true
       }).then(result => {
         if (result.isConfirmed) {
           this.$axios
             .put(`clients/${data.id}`, data)
             .then(response => {
-              msg = response.data.Message;
+              msg = response.data.Message
 
-              this.$swal({
+              void this.$swal({
                 title: msg,
-                icon: "success",
+                icon: 'success',
                 showConfirmButton: true
-              });
-              this.$emit("showUpdate", { show: false, editItem: {} });
+              })
+              this.$emit('showUpdate', { show: false, editItem: {} })
             })
+            // eslint-disable-next-line handle-callback-err
             .catch(error => {
-              this.$swal({
-                title: "Erro ao cadastrar !",
-                text: "Entre em contato com o suporte",
-                icon: "error",
+              void this.$swal({
+                title: 'Erro ao cadastrar !',
+                text: 'Entre em contato com o suporte',
+                icon: 'error',
                 showConfirmButton: true
-              });
-            });
+              })
+            })
         }
-      });
+      })
     },
 
-    buildDataUpdate() {
-      let data = {};
+    buildDataUpdate () {
+      let data = {}
       data = {
         id: this.editItem._id,
         name: this.editItem.name,
@@ -105,24 +106,24 @@ export default defineComponent({
         company: this.editItem.company,
         department: this.editItem.department,
         phone: this.editItem.phone
-      };
+      }
 
-      return data;
+      return data
     },
 
-    cancelAdd() {
-      this.$swal({
-        title: "Cancelar edição ?",
-        icon: "warning",
+    cancelAdd () {
+      void this.$swal({
+        title: 'Cancelar edição ?',
+        icon: 'warning',
         showCancelButton: true,
-        cancelButtonText: "Voltar",
-        confirmButtonText: "Cancelar"
+        cancelButtonText: 'Voltar',
+        confirmButtonText: 'Cancelar'
       }).then(result => {
         if (result.isConfirmed) {
-          this.$emit("showUpdate", { show: false, editItem: {} });
+          this.$emit('showUpdate', { show: false, editItem: {} })
         }
-      });
+      })
     }
   }
-});
+})
 </script>

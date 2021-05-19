@@ -12,49 +12,47 @@ declare module 'vue/types/vue' {
 }
 
 export default boot(({ Vue }) => {
-  axios.defaults.baseURL = process.env.API
+  axios.defaults.baseURL = 'https://backend-ope.herokuapp.com'
+  console.log(process.env.API)
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   Vue.prototype.$axios = axios
-  Vue.prototype.$axios.interceptors.request.use(async function (config: { hasOwnProperty: (arg0: string) => any; optLoading: { spinner: any; spinnerColor: any; message: any; delay: any }; showLoading: boolean }) {
-
-    var optLoading = {
+  Vue.prototype.$axios.interceptors.request.use(async function (config: { hasOwnProperty: (arg0: string) => never; optLoading: { spinner: never; spinnerColor: never; message: never; delay: never }; showLoading: boolean }) {
+    const optLoading = {
       spinner: (config.hasOwnProperty('spinner')) ? config.optLoading.spinner : QSpinnerDots,
       spinnerColor: (config.hasOwnProperty('spinnerColor')) ? config.optLoading.spinnerColor : 'secondary',
       message: (config.hasOwnProperty('message')) ? config.optLoading.message : '',
       delay: (config.hasOwnProperty('delay')) ? config.optLoading.delay : 400
-    };
-
-    if(!config.hasOwnProperty('showLoading') || config.showLoading !== false) {
-
-      Loading.show(optLoading);
-      await sleep(2000);
     }
 
-    return config;
+    if (!config.hasOwnProperty('showLoading') || config.showLoading) {
+      // @ts-ignore
+      Loading.show(optLoading)
+      await sleep(2000)
+    }
+
+    return config
   }, function (error: any) {
-    return Promise.reject(error);
-  });
+    return Promise.reject(error)
+  })
 
   Vue.prototype.$axios.interceptors.response.use(function (response: any) {
-
-    Loading.hide();
-    return response;
+    Loading.hide()
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return response
   }, function (error: any) {
+    if (error.response.status === 401 && error.response.config.url !== 'auth/login') {
+      localStorage.setItem('user', '')
+      localStorage.setItem('token', '')
+      axios.defaults.headers.common.Authorization = ''
 
-    if(error.response.status === 401 && error.response.config.url !== 'auth/login') {
-      localStorage.setItem('user', '');
-      localStorage.setItem('token', '');
-      axios.defaults.headers.common['Authorization'] = '';
-
-      window.location.href = '/';
+      window.location.href = '/'
     }
 
-    Loading.hide();
-    return Promise.reject(error);
-  });
+    Loading.hide()
+    return Promise.reject(error)
+  })
 
-  axios.defaults.headers.common['Authorization'] = localStorage.getItem('token') ? `Bearer ${localStorage.getItem('token')}` : ''
+  axios.defaults.headers.common.Authorization = localStorage.getItem('token') ? `Bearer ${localStorage.getItem('token')}` : ''
 })
 
 /**
@@ -62,6 +60,6 @@ export default boot(({ Vue }) => {
  *
  * @param ms
  */
-function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+function sleep (ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
 }

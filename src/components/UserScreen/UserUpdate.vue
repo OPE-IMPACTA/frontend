@@ -3,7 +3,7 @@
     <div class="col-md-6">
       <q-card>
         <q-card-section>
-          <div class="text-h5 text-primary" align="center">
+          <div class="text-h5 text-primary text-center">
             Atualizar usuário
           </div>
         </q-card-section>
@@ -16,7 +16,7 @@
                 :editItem="editItem"
               ></UserManagement>
             </q-card-section>
-            <div class="" align="right">
+            <div class="text-right">
               <q-btn
                 @click="cancelAdd"
                 class="q-ma-md"
@@ -37,112 +37,112 @@
 </template>
 
 <script>
-import UserManagement from "./userManagement.vue";
-import { defineComponent } from "@vue/composition-api";
+import UserManagement from './userManagement.vue'
+import { defineComponent } from '@vue/composition-api'
 
 export default defineComponent({
   props: {
     editItem: {}
   },
-  name: "UserUpdate",
+  name: 'UserUpdate',
   components: { UserManagement },
-  data() {
+  data () {
     return {
       prompt: false,
       passwordRules: [],
       confirmPasswordRules: [],
       group_id: this.editItem.group_id,
       updateAdmin: false
-    };
+    }
   },
 
-  mounted() {
+  mounted () {
     if (
       typeof this.$axios.defaults.headers.common.Authorization ===
-        "undefined" ||
-      this.$axios.defaults.headers.common.Authorization === ""
+        'undefined' ||
+      this.$axios.defaults.headers.common.Authorization === ''
     ) {
-      this.$router.push({ path: "/" });
+      void this.$router.push({ path: '/' })
     }
   },
 
   methods: {
-    onSubmit() {
-      let data = this.buildDataUpdate();
+    onSubmit () {
+      const data = this.buildDataUpdate()
 
-      let msg = "";
-      this.$swal({
-        title: "Atualizar Usuário ?",
-        icon: "warning",
+      let msg = ''
+      void this.$swal({
+        title: 'Atualizar Usuário ?',
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: "Confirmar",
+        confirmButtonText: 'Confirmar',
         showLoaderOnConfirm: true
       }).then(result => {
         if (result.isConfirmed) {
           this.$axios
             .put(`users/${data.id}`, data)
             .then(response => {
-              msg = response.data.Message;
+              msg = response.data.Message
 
-              this.$swal({
+              void this.$swal({
                 title: msg,
-                icon: "success",
+                icon: 'success',
                 showConfirmButton: true
-              });
-              this.$emit("showUpdate", { show: false, editItem: {} });
+              })
+              this.$emit('showUpdate', { show: false, editItem: {} })
             })
-            .catch(error => {
-              this.$swal({
-                title: "Erro ao cadastrar !",
-                text: "Entre em contato com o suporte",
-                icon: "error",
+            .catch(() => {
+              void this.$swal({
+                title: 'Erro ao cadastrar !',
+                text: 'Entre em contato com o suporte',
+                icon: 'error',
                 showConfirmButton: true
-              });
-            });
+              })
+            })
         }
-      });
+      })
     },
 
-    buildDataUpdate() {
-      let resetPass = false;
-      let data = {};
+    buildDataUpdate () {
+      let resetPass = false
+      let data = {}
 
       data = {
         id: this.editItem._id,
         name: this.editItem.name,
         email: this.editItem.email,
         group_id: this.editItem.group.value
-      };
-
-      resetPass = this.validResetPassword();
-
-      if (resetPass) {
-        data.password = this.editItem.password;
-        data.confirmPassword = this.editItem.confirmPassword;
       }
 
-      return data;
+      resetPass = this.validResetPassword()
+
+      if (resetPass) {
+        data.password = this.editItem.password
+        data.confirmPassword = this.editItem.confirmPassword
+      }
+
+      return data
     },
 
-    validResetPassword() {
+    validResetPassword () {
       return (
-        this.editItem.password !== "" && this.editItem.confirmPassword !== ""
-      );
+        this.editItem.password !== '' && this.editItem.confirmPassword !== ''
+      )
     },
 
-    cancelAdd() {
-      this.$swal({
-        title: "Cancelar edição ?",
-        icon: "warning",
+    cancelAdd () {
+      void this.$swal({
+        title: 'Cancelar edição ?',
+        icon: 'warning',
         showCancelButton: true,
-        cancelButtonText: "Voltar",
-        confirmButtonText: "Cancelar"
+        cancelButtonText: 'Voltar',
+        confirmButtonText: 'Cancelar'
       }).then(result => {
         if (result.isConfirmed) {
-          this.$emit("showUpdate", { show: false, editItem: {} });
+          this.$emit('showUpdate', { show: false, editItem: {} })
         }
-      });
+      })
     }
   }
-});
+})
 </script>

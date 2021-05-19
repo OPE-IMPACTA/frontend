@@ -14,7 +14,7 @@
           :columns="columns"
           row-key="_id"
           :loading="loading"
-          :grid="mode == 'grid'"
+          :grid="mode === 'grid'"
           :filter="filter"
           :pagination.sync="pagination"
         >
@@ -105,9 +105,9 @@
                       <q-chip
                         v-if="col.name === 'status'"
                         :color="
-                          props.row.status == 'Active'
+                          props.row.status === 'Active'
                             ? 'green'
-                            : props.row.status == 'Disable'
+                            : props.row.status === 'Disable'
                             ? 'red'
                             : 'grey'
                         "
@@ -115,8 +115,8 @@
                         dense
                         class="text-weight-bolder"
                         square
-                        >{{ col.value }}</q-chip
-                      >
+                        >{{ col.value }}
+                      </q-chip>
                       <q-td
                         class="text-center"
                         v-else-if="col.name === 'action'"
@@ -161,142 +161,141 @@
 </template>
 
 <script>
-import { exportFile, date } from "quasar";
+import { exportFile, date } from 'quasar'
 const defaultItem = {
-  project_id: "",
-  user_id: "",
-  description: "",
-  startDate: "",
-  endDate: "",
-  hours: ""
-};
+  project_id: '',
+  user_id: '',
+  description: '',
+  startDate: '',
+  endDate: '',
+  hours: ''
+}
 
 export default {
   props: {
     resetProjects: Boolean
   },
   watch: {
-    resetProjects: function(val) {
+    resetProjects: function () {
       if (this.resetProjects) {
-        this.refreshProjects();
-        this.$emit("updateReset", false);
+        this.refreshProjects()
+        this.$emit('updateReset', false)
       }
     }
   },
-  data() {
+  data () {
     return {
-      filter: "",
+      filter: '',
       loading: false,
-      group: "",
+      group: '',
       show_form: false,
       editedItem: defaultItem,
-      mode: "list",
+      mode: 'list',
       columns: [
         {
-          name: "project",
+          name: 'project',
           required: true,
-          label: "Projeto",
-          align: "left",
-          field: "project",
+          label: 'Projeto',
+          align: 'left',
+          field: 'project',
           sortable: true
         },
         {
-          name: "user",
-          align: "left",
-          label: "Usuário",
-          field: "user",
+          name: 'user',
+          align: 'left',
+          label: 'Usuário',
+          field: 'user',
           sortable: true
         },
         {
-          name: "client",
-          align: "left",
-          label: "Cliente",
-          field: "client",
+          name: 'client',
+          align: 'left',
+          label: 'Cliente',
+          field: 'client',
           sortable: true
         },
         {
-          name: "description",
-          align: "left",
-          label: "Descrição",
-          field: "description",
+          name: 'description',
+          align: 'left',
+          label: 'Descrição',
+          field: 'description',
           sortable: true
         },
         {
-          name: "startDate",
-          align: "left",
-          label: "Data ínicio",
+          name: 'startDate',
+          align: 'left',
+          label: 'Data início',
           sortable: true,
-          field: row => date.formatDate(row.startDate, 'DD/MM/YYYY'),
+          field: row => date.formatDate(row.startDate, 'DD/MM/YYYY')
         },
         {
-          name: "endDate",
-          align: "left",
-          label: "Data final",
-          field: "endDate",
+          name: 'endDate',
+          align: 'left',
+          label: 'Data final',
           sortable: true,
-          field: row => date.formatDate(row.startDate, 'DD/MM/YYYY'),
+          field: row => date.formatDate(row.startDate, 'DD/MM/YYYY')
         },
         {
-          name: "hours",
-          align: "left",
-          label: "Hora",
-          field: "hours",
-          sortable: true,
+          name: 'hours',
+          align: 'left',
+          label: 'Hora',
+          field: 'hours',
+          sortable: true
         },
-        { name: "action", align: "center", label: "Ações", field: "actions" }
+        { name: 'action', align: 'center', label: 'Ações', field: 'actions' }
       ],
       data: [],
       pagination: {
         rowsPerPage: 7
       }
-    };
+    }
   },
 
-  mounted() {
+  mounted () {
     if (
       typeof this.$axios.defaults.headers.common.Authorization ===
-        "undefined" ||
-      this.$axios.defaults.headers.common.Authorization === ""
+        'undefined' ||
+      this.$axios.defaults.headers.common.Authorization === ''
     ) {
-      this.$router.push({ path: "/" });
+      this.$router.push({ path: '/' })
     }
     // get initial data from server (1st page)
     this.onRequest({
       pagination: this.pagination,
       filter: undefined
-    });
+    })
   },
   methods: {
-    exportTable() {
-      const header = ["Projetos", "Usuários", "Cliente", "Descrição", "Data ínicio", "Data final", "Hora"];
+    exportTable () {
+      const header = ['Projetos', 'Usuários', 'Cliente', 'Descrição', 'Data início', 'Data final', 'Hora']
       const content = this.data.map(row => {
-        return `\r\n"${row.project}", "${row.user}", "${row.client}", "${row.description}", "${row.startDate}", "${row.startEnd}", ${row.hours}`;
-      });
-      const result = `"${header.join('","')}"\r\n${content}`;
+        return `\r\n"${row.project}", "${row.user}", "${row.client}", "${row.description}", "${row.startDate}", "${row.endDate}", ${row.hours}`
+      })
+      const result = `"${header.join('","')}"\r\n${content}`
 
-      const status = exportFile("tasks-management.csv", result, "text/csv");
+      const status = exportFile('tasks-management.csv', result, 'text/csv')
 
       if (status !== true) {
         this.$q.notify({
-          message: "Erro ao fazer o download...",
-          color: "negative",
-          icon: "warning"
-        });
+          message: 'Erro ao fazer o download...',
+          color: 'negative',
+          icon: 'warning'
+        })
       }
     },
 
-    onRequest(props) {
-      const { page, rowsPerPage, sortBy, descending } = props.pagination;
-      const filter = props.filter;
-      this.loading = true;
+    onRequest (props) {
+      const { page, rowsPerPage, sortBy, descending } = props.pagination
+      const filter = props.filter
+      this.loading = true
 
       setTimeout(() => {
-        this.pagination.rowsNumber = this.getRowsNumberCount(filter);
+        this.pagination.rowsNumber = this.getRowsNumberCount(filter)
 
         const fetchCount =
-          rowsPerPage === 0 ? this.pagination.rowsNumber : rowsPerPage;
+          rowsPerPage === 0 ? this.pagination.rowsNumber : rowsPerPage
 
-        const startRow = (page - 1) * rowsPerPage;
+        const startRow = (page - 1) * rowsPerPage
 
         const returnedData = this.fetchFromServer(
           startRow,
@@ -304,138 +303,136 @@ export default {
           filter,
           sortBy,
           descending
-        );
+        )
 
-        this.data.splice(0, this.data.length, ...returnedData);
+        this.data.splice(0, this.data.length, ...returnedData)
 
-        this.pagination.page = page;
-        this.pagination.rowsPerPage = rowsPerPage;
-        this.pagination.sortBy = sortBy;
-        this.pagination.descending = descending;
+        this.pagination.page = page
+        this.pagination.rowsPerPage = rowsPerPage
+        this.pagination.sortBy = sortBy
+        this.pagination.descending = descending
 
-        this.loading = false;
-      }, 1500);
+        this.loading = false
+      }, 1500)
     },
 
-    fetchFromServer(startRow, count, filter, sortBy, descending) {
-      const token = this.$axios.defaults.headers.common["Authorization"];
+    fetchFromServer (startRow, count, filter, sortBy, descending) {
+      const token = this.$axios.defaults.headers.common.Authorization
       const config = {
         headers: { Authorization: token },
         showLoading: false
-      };
+      }
 
       this.$axios
-        .get("tasks", config)
+        .get('tasks', config)
         .then(response => {
-          this.data = response.data.data;
+          this.data = response.data.data
         })
         .catch(e => {
           if (e.response.status !== 200 && e.response.status !== 403) {
             this.noti = this.$q.notify({
-              type: "negative",
+              type: 'negative',
               multiline: true,
-              message: "Erro ao carregar dados",
+              message: 'Erro ao carregar dados',
               timeout: 3000
-            });
+            })
           }
-        });
+        })
 
       const data = filter
         ? this.data.filter(row => row.description.includes(filter))
-        : this.data.slice();
+        : this.data.slice()
 
       // handle sortBy
       if (sortBy) {
         const sortFn =
-          sortBy === "desc"
+          sortBy === 'desc'
             ? descending
               ? (a, b) => (a.description > b.description ? -1 : a.description < b.description ? 1 : 0)
               : (a, b) => (a.description > b.description ? 1 : a.description < b.description ? -1 : 0)
             : descending
-            ? (a, b) => parseFloat(b[sortBy]) - parseFloat(a[sortBy])
-            : (a, b) => parseFloat(a[sortBy]) - parseFloat(b[sortBy]);
-        data.sort(sortFn);
+              ? (a, b) => parseFloat(b[sortBy]) - parseFloat(a[sortBy])
+              : (a, b) => parseFloat(a[sortBy]) - parseFloat(b[sortBy])
+        data.sort(sortFn)
       }
 
-      return data.slice(startRow, startRow + count);
+      return data.slice(startRow, startRow + count)
     },
 
-    getRowsNumberCount(filter) {
-      let count = 0;
+    getRowsNumberCount (filter) {
+      let count = 0
       this.data.forEach(treat => {
         if (treat.description.includes(filter)) {
-          ++count;
+          ++count
         }
-      });
-      return count;
+      })
+      return count
     },
 
-    showCreatProject() {
-      this.editedItem = defaultItem;
-      this.$emit("showCreate", true);
+    showCreatProject () {
+      this.editedItem = defaultItem
+      this.$emit('showCreate', true)
     },
 
-    editItem(item) {
+    editItem (item) {
       this.editedIndex = this.data.findIndex(
-        (v, i) => v.__index === item.__index
-      );
+        (v) => v.__index === item.__index
+      )
 
-      this.editedItem = Object.assign({}, item);
+      this.editedItem = Object.assign({}, item)
       this.itemUpdate = {
         editItem: this.editedItem,
         show: true
-      };
-      this.$emit("showUpdate", this.itemUpdate);
+      }
+      this.$emit('showUpdate', this.itemUpdate)
     },
 
-    getDelete(item) {
+    getDelete (item) {
       this.$swal({
-        title: "Atenção!!",
-        text: "Tem certeza que deseja deletar o projetos ?",
-        icon: "warning",
+        title: 'Atenção!!',
+        text: 'Tem certeza que deseja deletar o projetos ?',
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#d6303e",
-        cancelButtonColor: "#c4c4c4",
-        cancelButtonText: "Cancelar",
-        confirmButtonText: "Deletar"
+        confirmButtonColor: '#d6303e',
+        cancelButtonColor: '#c4c4c4',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Deletar'
       }).then(result => {
         if (result.isConfirmed) {
-          this.deleteUser(item);
+          this.deleteUser(item)
         }
-      });
+      })
     },
 
-    deleteUser(item) {
-      const userId = item._id;
+    deleteUser (item) {
+      const userId = item._id
       this.$axios
-        .delete("/tasks/" + userId)
+        .delete('/tasks/' + userId)
         .then(response => {
-          if (response.status == 200) {
+          if (response.status === 200) {
             this.$swal(
-              "Deletado!",
-              "A tarefa foi deletado com sucesso!",
-              "success"
-            );
-            this.refreshProjects();
+              'Deletado!',
+              'A tarefa foi deletado com sucesso!',
+              'success'
+            )
+            this.refreshProjects()
           }
         })
-        .catch(e => {
-          this.$swal("Erro!", "Entre em contato com o suporte!", "error");
-        });
+        .catch(() => {
+          this.$swal('Erro!', 'Entre em contato com o suporte!', 'error')
+        })
     },
 
-    refreshProjects() {
-      this.onRequest({ filter: "", pagination: this.pagination });
+    refreshProjects () {
+      this.onRequest({ filter: '', pagination: this.pagination })
     }
   }
-};
+}
 </script>
 
 <style>
 .btn-size-md {
   font-size: 12px;
 }
-span.block {
-  margin-right: 12px;
-}
+
 </style>

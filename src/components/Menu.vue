@@ -5,7 +5,7 @@
         <img
           src="../assets/logo-bullest.png"
           style="width: 50%; padding: 15px; margin-top: 10px"
-        />
+          alt=""/>
       </div>
     </div>
     <q-item-label header class="text-secondary text-center text-h4">
@@ -23,7 +23,7 @@
       @click="link = 'inbox'"
     >
       <q-item-section avatar>
-        <q-icon name="fas fa-home" />
+        <q-icon name="fas fa-home"/>
       </q-item-section>
 
       <q-item-section>
@@ -126,7 +126,7 @@
         @click="link = 'inbox'"
       >
         <q-item-section avatar>
-          <q-icon name="content_paste" />
+          <q-icon name="content_paste"/>
         </q-item-section>
 
         <q-item-section>
@@ -145,7 +145,7 @@
         @click="link = 'inbox'"
       >
         <q-item-section avatar>
-          <q-icon name="stacked_bar_chart" />
+          <q-icon name="stacked_bar_chart"/>
         </q-item-section>
 
         <q-item-section>
@@ -158,23 +158,22 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       admin: true,
-      link: "inbox",
+      link: 'inbox',
       group: 'admin'
-    };
+    }
   },
-  created() {
-    const user = JSON.parse(localStorage.getItem("user"));
-    this.$axios.get("group").then(response => {
-      const result = response.data.reduce(
+  created () {
+    const user = JSON.parse(localStorage.getItem('user'))
+    this.$axios.get('group').then(response => {
+      this.admin = response.data.reduce(
         ({ _id, group }) => _id === user.data.group_id && this.group === group
-      );
-      this.admin = result;
-    });
+      )
+    })
   }
-};
+}
 </script>
 
 <style lang="scss">

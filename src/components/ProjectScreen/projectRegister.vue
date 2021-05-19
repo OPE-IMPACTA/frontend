@@ -3,7 +3,7 @@
     <div class="col-md-6">
       <q-card>
         <q-card-section>
-          <div class="text-h5 text-primary" align="center">
+          <div class="text-h5 text-primary text-center">
             Cadastrar Projeto
           </div>
         </q-card-section>
@@ -12,7 +12,7 @@
             <q-card-section>
               <ProjectManagement :editItem="editItem"></ProjectManagement>
             </q-card-section>
-            <div class="" align="right">
+            <div class="text-right">
               <q-btn
                 @click="cancelAdd"
                 class="q-ma-md"
@@ -33,34 +33,34 @@
 </template>
 
 <script>
-import ProjectManagement from "./projectManagement.vue";
-import { defineComponent } from "@vue/composition-api";
+import ProjectManagement from './projectManagement.vue'
+import { defineComponent } from '@vue/composition-api'
 
 const defaultItem = {
-  user: "",
-  client: "",
-  description: "",
-  name: ""
-};
+  user: '',
+  client: '',
+  description: '',
+  name: ''
+}
 
 export default defineComponent({
-  name: "ProjectRegister",
+  name: 'ProjectRegister',
   components: { ProjectManagement },
-  data() {
+  data () {
     return {
       editItem: defaultItem,
       prompt: false
-    };
+    }
   },
 
   methods: {
-    onSubmit() {
-      this.$swal({
-        title: "Cadastrar Projeto ?",
-        icon: "warning",
+    onSubmit () {
+      void this.$swal({
+        title: 'Cadastrar Projeto ?',
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: "Cadastrar",
-        cancelButtonText: "Cancelar",
+        confirmButtonText: 'Cadastrar',
+        cancelButtonText: 'Cancelar',
         showLoaderOnConfirm: true
       }).then(result => {
         if (result.isConfirmed) {
@@ -69,57 +69,57 @@ export default defineComponent({
             client_id: this.editItem.client.value,
             description: this.editItem.description,
             name: this.editItem.name,
-            status: "Novo"
-          };
+            status: 'Novo'
+          }
 
           this.$axios
-            .post("projects", data)
+            .post('projects', data)
             .then(response => {
-              this.$swal({
+              void this.$swal({
                 title: response.data.Message,
-                icon: "success",
+                icon: 'success',
                 showConfirmButton: true
-              });
-              this.resetForm();
-              this.$emit("showCreate", false);
+              })
+              this.resetForm()
+              this.$emit('showCreate', false)
             })
-            .catch(error => {
-              this.$swal({
-                title: "Erro ao cadastrar !",
-                text: "Entre em contato com o suporte",
-                icon: "error",
+            .catch(() => {
+              void this.$swal({
+                title: 'Erro ao cadastrar !',
+                text: 'Entre em contato com o suporte',
+                icon: 'error',
                 showConfirmButton: true
-              });
-            });
+              })
+            })
         }
-      });
+      })
     },
 
-    cancelAdd() {
-      this.$swal({
-        title: "Cancelar cadastro ?",
-        icon: "warning",
+    cancelAdd () {
+      void this.$swal({
+        title: 'Cancelar cadastro ?',
+        icon: 'warning',
         showCancelButton: true,
-        cancelButtonText: "Voltar",
-        confirmButtonText: "Cancelar"
+        cancelButtonText: 'Voltar',
+        confirmButtonText: 'Cancelar'
       }).then(result => {
         if (result.isConfirmed) {
-          this.resetForm();
-          this.$emit("showCreate", false);
+          this.resetForm()
+          this.$emit('showCreate', false)
         }
-      });
+      })
     },
 
-    resetForm() {
-      defaultItem.user = "";
-      defaultItem.client = "";
-      defaultItem.description = "";
-      defaultItem.name = "";
+    resetForm () {
+      defaultItem.user = ''
+      defaultItem.client = ''
+      defaultItem.description = ''
+      defaultItem.name = ''
     },
 
-    hide() {
-      this.prompt = false;
+    hide () {
+      this.prompt = false
     }
   }
-});
+})
 </script>

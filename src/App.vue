@@ -1,6 +1,8 @@
 <template>
   <div id="q-app">
-    <router-view />
+    <transition mode="out-in">
+      <router-view/>
+    </transition>
   </div>
 </template>
 <script lang="ts">

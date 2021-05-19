@@ -7,7 +7,7 @@
 // https://quasar.dev/quasar-cli/quasar-conf-js
 /* eslint-env node */
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { configure } = require('quasar/wrappers');
+const { configure } = require('quasar/wrappers')
 
 module.exports = configure(function (ctx) {
   return {
@@ -53,7 +53,7 @@ module.exports = configure(function (ctx) {
       vueRouterMode: 'hash', // available values: 'hash', 'history',
       env: {
         API: process.env.API,
-        BUCKET: process.env.BUCKET,
+        BUCKET: process.env.BUCKET
       },
       // transpile: false,
 

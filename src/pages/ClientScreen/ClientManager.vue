@@ -27,19 +27,20 @@ export default defineComponent({
     }
   },
   methods: {
-    showCreate (hide) {
+    showCreate (hide: boolean) {
       this.show_create_client = hide
     },
 
-    showUpdate (data) {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    showUpdate (data: { editItem: {}; show: boolean }) {
       this.editItem = data.editItem
       this.show_update_client = data.show
     }
   },
 
   mounted: function () {
-    if (typeof this.$axios.defaults.headers.common['Authorization'] == 'undefined' || this.$axios.defaults.headers.common['Authorization'] === '') {
-      this.$router.push({ path: '/' })
+    if (typeof this.$axios.defaults.headers.common.Authorization === 'undefined' || this.$axios.defaults.headers.common.Authorization === '') {
+      void this.$router.push({ path: '/' })
     }
   }
 })

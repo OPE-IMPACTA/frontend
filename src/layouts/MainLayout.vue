@@ -11,7 +11,8 @@
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
         <q-toolbar-title class="text-center" v-if="isLogin"
-          >Bem-vindo (a) {{ username }}!</q-toolbar-title
+        >Bem-vindo (a) {{ username }}!
+        </q-toolbar-title
         >
         <q-btn
           v-if="isLogin"
@@ -36,7 +37,7 @@
       </div>
     </q-drawer>
     <q-page-container>
-      <router-view />
+      <router-view/>
     </q-page-container>
 
     <q-footer v-if="isLogin" class="bg-secondary text-primary">
@@ -50,58 +51,58 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "@vue/composition-api";
-import { use } from "echarts";
-import MenuLateral from "../components/Menu.vue";
+import { defineComponent, ref } from '@vue/composition-api'
+import MenuLateral from '../components/Menu.vue'
 
 export default defineComponent({
-  name: "MainLayout",
+  name: 'MainLayout',
   components: { MenuLateral },
-  setup() {
-    const leftDrawerOpen = ref(false);
-    return { leftDrawerOpen };
+  setup () {
+    const leftDrawerOpen = ref(false)
+    return { leftDrawerOpen }
   },
 
-  data() {
+  data () {
     return {
       user: {},
-      username: ""
-    };
+      username: ''
+    }
   },
 
-  created() {
-    this.user = localStorage.getItem("user")
-      ? JSON.parse(localStorage.getItem("user"))
-      : "";
-
-    this.username = this.user.data.name;
+  created () {
+    // this.user = localStorage.getItem('user')
+    //   ? JSON.parse(localStorage.getItem('user'))
+    //   : ''
+    //
+    // this.username = this.user.data.name
   },
 
   computed: {
-    isLogin() {
-      return this.$route.name !== "login";
+    isLogin () {
+      return this.$route.name !== 'login'
     }
   },
   methods: {
-    onLogout() {
+    onLogout () {
       this.$axios
-        .post("/auth/logout")
-        .then(response => {
-          localStorage.setItem("user", "");
-          localStorage.setItem("token", "");
-          this.$axios.defaults.headers.common["Authorization"] = "";
-          this.leftDrawerOpen = false;
-          this.$router.push({ name: "login" });
+        .post('/auth/logout')
+        .then(() => {
+          localStorage.setItem('user', '')
+          localStorage.setItem('token', '')
+          this.$axios.defaults.headers.common.Authorization = ''
+          this.leftDrawerOpen = false
+          void this.$router.push({ name: 'login' })
         })
         .catch(er => {
-          console.log(er);
-        });
+          console.log(er)
+        })
     }
   }
-});
+})
 </script>
 
 <style lang="scss">
+
 .q-drawer {
   background-size: contain !important;
   background-repeat: no-repeat;
@@ -119,4 +120,5 @@ export default defineComponent({
 .menu-lateral {
   background: $cyan-7;
 }
+
 </style>

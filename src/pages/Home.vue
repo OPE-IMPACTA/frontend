@@ -1,31 +1,29 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <div class="col-md-10">
-      <TaskCard></TaskCard>
-    </div>
-  </q-page>
+  <section>
+    <h1>👍 Compre ou Venda 👎</h1>
+    <ProjectsBuscar />
+    <ProjectsLista />
+  </section>
 </template>
 
-<script lang="ts">
-import TaskCard from "../components/Cards/TaskCard.vue"
-import { defineComponent } from '@vue/composition-api'
+<script>
+import ProjectsBuscar from '../components/Cards/ProjectsBuscar.vue'
+import ProjectsLista from '../components/Cards/ProjectsList.vue'
 
-export default defineComponent({
+export default {
   name: 'Home',
-  components: { TaskCard },
-
-  data () {
-    return {
-
-    }
-  },
-  mounted: function () {
-    if (typeof this.$axios.defaults.headers.common['Authorization'] === 'undefined' || this.$axios.defaults.headers.common['Authorization'] === '') {
-      this.$router.push({ path: '/' })
-    }
-  },
-  methods: {}
-
-})
-
+  components: {
+    ProjectsBuscar,
+    ProjectsLista
+  }
+}
 </script>
+
+<style scoped>
+h1 {
+  color: #87f;
+  margin-top: 40px;
+  font-size: 2rem;
+  text-align: center;
+}
+</style>

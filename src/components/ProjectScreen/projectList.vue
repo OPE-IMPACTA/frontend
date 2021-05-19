@@ -14,7 +14,7 @@
           :columns="columns"
           row-key="_id"
           :loading="loading"
-          :grid="mode == 'grid'"
+          :grid="mode === 'grid'"
           :filter="filter"
           :pagination.sync="pagination"
         >
@@ -105,9 +105,9 @@
                       <q-chip
                         v-if="col.name === 'status'"
                         :color="
-                          props.row.status == 'Active'
+                          props.row.status === 'Active'
                             ? 'green'
-                            : props.row.status == 'Disable'
+                            : props.row.status === 'Disable'
                             ? 'red'
                             : 'grey'
                         "
@@ -115,8 +115,8 @@
                         dense
                         class="text-weight-bolder"
                         square
-                        >{{ col.value }}</q-chip
-                      >
+                        >{{ col.value }}
+                      </q-chip>
                       <q-td
                         class="text-center"
                         v-else-if="col.name === 'action'"
@@ -161,122 +161,122 @@
 </template>
 
 <script>
-import { exportFile } from "quasar";
+import { exportFile } from 'quasar'
 const defaultItem = {
-  client: "",
-  client_id: "",
-  description: "",
-  status: "",
-  user: "",
-  user_id: "",
-  id: ""
-};
+  client: '',
+  client_id: '',
+  description: '',
+  status: '',
+  user: '',
+  user_id: '',
+  id: ''
+}
 
 export default {
   props: {
     resetProjects: Boolean
   },
   watch: {
-    resetProjects: function(val) {
+    resetProjects: function () {
       if (this.resetProjects) {
-        this.refreshProjects();
-        this.$emit("updateReset", false);
+        this.refreshProjects()
+        this.$emit('updateReset', false)
       }
     }
   },
-  data() {
+  data () {
     return {
-      filter: "",
+      filter: '',
       loading: false,
-      group: "",
+      group: '',
       show_form: false,
       editedItem: defaultItem,
-      mode: "list",
+      mode: 'list',
       columns: [
         {
-          name: "name",
+          name: 'name',
           required: true,
-          label: "Nome",
-          align: "left",
-          field: "name",
+          label: 'Nome',
+          align: 'left',
+          field: 'name',
           sortable: true
         },
         {
-          name: "user",
+          name: 'user',
           required: true,
-          label: "Usuários",
-          align: "left",
-          field: "user",
+          label: 'Usuários',
+          align: 'left',
+          field: 'user',
           sortable: true
         },
         {
-          name: "client",
-          align: "left",
-          label: "Clientes",
-          field: "client",
+          name: 'client',
+          align: 'left',
+          label: 'Clientes',
+          field: 'client',
           sortable: true
         },
         {
-          name: "description",
-          align: "left",
-          label: "Descrição",
-          field: "description",
+          name: 'description',
+          align: 'left',
+          label: 'Descrição',
+          field: 'description',
           sortable: true
         },
-        { name: "action", align: "center", label: "Ações", field: "actions" }
+        { name: 'action', align: 'center', label: 'Ações', field: 'actions' }
       ],
       data: [],
       pagination: {
         rowsPerPage: 7
       }
-    };
+    }
   },
 
-  mounted() {
+  mounted () {
     if (
       typeof this.$axios.defaults.headers.common.Authorization ===
-        "undefined" ||
-      this.$axios.defaults.headers.common.Authorization === ""
+        'undefined' ||
+      this.$axios.defaults.headers.common.Authorization === ''
     ) {
-      this.$router.push({ path: "/" });
+      this.$router.push({ path: '/' })
     }
     // get initial data from server (1st page)
     this.onRequest({
       pagination: this.pagination,
       filter: undefined
-    });
+    })
   },
   methods: {
-    exportTable() {
-      const header = ["name", "Usuários", "Clientes", "Descrição"];
+    exportTable () {
+      const header = ['name', 'Usuários', 'Clientes', 'Descrição']
       const content = this.data.map(row => {
-        return `\r\n${row.name}", "${row.project}", "${row.client}", "${row.description}"`;
-      });
-      const result = `"${header.join('","')}"\r\n${content}`;
+        return `\r\n${row.name}", "${row.project}", "${row.client}", "${row.description}"`
+      })
+      const result = `"${header.join('","')}"\r\n${content}`
 
-      const status = exportFile("projetos-management.csv", result, "text/csv");
+      const status = exportFile('projetos-management.csv', result, 'text/csv')
 
       if (status !== true) {
         this.$q.notify({
-          message: "Erro ao fazer o download...",
-          color: "negative",
-          icon: "warning"
-        });
+          message: 'Erro ao fazer o download...',
+          color: 'negative',
+          icon: 'warning'
+        })
       }
     },
 
-    onRequest(props) {
-      const { page, rowsPerPage, sortBy, descending } = props.pagination;
-      const filter = props.filter;
-      this.loading = true;
+    onRequest (props) {
+      const { page, rowsPerPage, sortBy, descending } = props.pagination
+      const filter = props.filter
+      this.loading = true
 
       setTimeout(() => {
-        this.pagination.rowsNumber = this.getRowsNumberCount(filter);
+        this.pagination.rowsNumber = this.getRowsNumberCount(filter)
 
         const fetchCount =
-          rowsPerPage === 0 ? this.pagination.rowsNumber : rowsPerPage;
+          rowsPerPage === 0 ? this.pagination.rowsNumber : rowsPerPage
 
-        const startRow = (page - 1) * rowsPerPage;
+        const startRow = (page - 1) * rowsPerPage
 
         const returnedData = this.fetchFromServer(
           startRow,
@@ -284,138 +284,135 @@ export default {
           filter,
           sortBy,
           descending
-        );
+        )
 
-        this.data.splice(0, this.data.length, ...returnedData);
+        this.data.splice(0, this.data.length, ...returnedData)
 
-        this.pagination.page = page;
-        this.pagination.rowsPerPage = rowsPerPage;
-        this.pagination.sortBy = sortBy;
-        this.pagination.descending = descending;
+        this.pagination.page = page
+        this.pagination.rowsPerPage = rowsPerPage
+        this.pagination.sortBy = sortBy
+        this.pagination.descending = descending
 
-        this.loading = false;
-      }, 1500);
+        this.loading = false
+      }, 1500)
     },
 
-    fetchFromServer(startRow, count, filter, sortBy, descending) {
-      const token = this.$axios.defaults.headers.common["Authorization"];
+    fetchFromServer (startRow, count, filter, sortBy, descending) {
+      const token = this.$axios.defaults.headers.common.Authorization
       const config = {
         headers: { Authorization: token },
         showLoading: false
-      };
+      }
 
       this.$axios
-        .get("projects", config)
+        .get('projects', config)
         .then(response => {
-          this.data = response.data.data;
+          this.data = response.data.data
         })
         .catch(e => {
           if (e.response.status !== 200 && e.response.status !== 403) {
             this.noti = this.$q.notify({
-              type: "negative",
+              type: 'negative',
               multiline: true,
-              message: "Erro ao carregar dados",
+              message: 'Erro ao carregar dados',
               timeout: 3000
-            });
+            })
           }
-        });
+        })
 
       const data = filter
         ? this.data.filter(row => row.user.includes(filter))
-        : this.data.slice();
+        : this.data.slice()
 
       // handle sortBy
       if (sortBy) {
         const sortFn =
-          sortBy === "desc"
+          sortBy === 'desc'
             ? descending
               ? (a, b) => (a.user > b.user ? -1 : a.user < b.user ? 1 : 0)
               : (a, b) => (a.user > b.user ? 1 : a.user < b.user ? -1 : 0)
             : descending
-            ? (a, b) => parseFloat(b[sortBy]) - parseFloat(a[sortBy])
-            : (a, b) => parseFloat(a[sortBy]) - parseFloat(b[sortBy]);
-        data.sort(sortFn);
+              ? (a, b) => parseFloat(b[sortBy]) - parseFloat(a[sortBy])
+              : (a, b) => parseFloat(a[sortBy]) - parseFloat(b[sortBy])
+        data.sort(sortFn)
       }
 
-      return data.slice(startRow, startRow + count);
+      return data.slice(startRow, startRow + count)
     },
 
-    getRowsNumberCount(filter) {
-      let count = 0;
+    getRowsNumberCount (filter) {
+      let count = 0
       this.data.forEach(treat => {
         if (treat.user.includes(filter)) {
-          ++count;
+          ++count
         }
-      });
-      return count;
+      })
+      return count
     },
 
-    showCreatProject() {
-      this.editedItem = defaultItem;
-      this.$emit("showCreate", true);
+    showCreatProject () {
+      this.editedItem = defaultItem
+      this.$emit('showCreate', true)
     },
 
-    editItem(item) {
+    editItem (item) {
       this.editedIndex = this.data.findIndex(
-        (v, i) => v.__index === item.__index
-      );
+        (v) => v.__index === item.__index
+      )
 
-      this.editedItem = Object.assign({}, item);
+      this.editedItem = Object.assign({}, item)
       this.itemUpdate = {
         editItem: this.editedItem,
         show: true
-      };
-      this.$emit("showUpdate", this.itemUpdate);
+      }
+      this.$emit('showUpdate', this.itemUpdate)
     },
 
-    getDelete(item) {
+    getDelete (item) {
       this.$swal({
-        title: "Atenção!!",
-        text: "Tem certeza que deseja deletar o projetos ?",
-        icon: "warning",
+        title: 'Atenção!!',
+        text: 'Tem certeza que deseja deletar o projetos ?',
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#d6303e",
-        cancelButtonColor: "#c4c4c4",
-        cancelButtonText: "Cancelar",
-        confirmButtonText: "Deletar"
+        confirmButtonColor: '#d6303e',
+        cancelButtonColor: '#c4c4c4',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Deletar'
       }).then(result => {
         if (result.isConfirmed) {
-          this.deleteUser(item);
+          this.deleteUser(item)
         }
-      });
+      })
     },
 
-    deleteUser(item) {
-      const userId = item._id;
+    deleteUser (item) {
+      const userId = item._id
       this.$axios
-        .delete("/projects/" + userId)
+        .delete('/projects/' + userId)
         .then(response => {
-          if (response.status == 200) {
+          if (response.status === 200) {
             this.$swal(
-              "Deletado!",
-              "O projetos foi deletado com sucesso!",
-              "success"
-            );
-            this.refreshProjects();
+              'Deletado!',
+              'O projetos foi deletado com sucesso!',
+              'success'
+            )
+            this.refreshProjects()
           }
         })
-        .catch(e => {
-          this.$swal("Erro!", "Entre em contato com o suporte!", "error");
-        });
+        .catch(
+          this.$swal('Erro!', 'Entre em contato com o suporte!', 'error')
+        )
     },
 
-    refreshProjects() {
-      this.onRequest({ filter: "", pagination: this.pagination });
+    refreshProjects () {
+      this.onRequest({ filter: '', pagination: this.pagination })
     }
   }
-};
+}
 </script>
 
 <style>
 .btn-size-md {
   font-size: 12px;
-}
-span.block {
-  margin-right: 12px;
 }
 </style>

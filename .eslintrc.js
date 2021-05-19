@@ -67,11 +67,14 @@ module.exports = {
 
   // add your custom rules here
   rules: {
+    'no-prototype-builtins': 'off',
+    'no-unsafe-member-access': 'off',
     // allow async-await
     'generator-star-spacing': 'off',
     // allow paren-less arrow functions
     'arrow-parens': 'off',
     'one-var': 'off',
+    'no-void': 'off',
 
     'import/first': 'off',
     'import/named': 'error',
@@ -85,8 +88,17 @@ module.exports = {
 
     // TypeScript
     quotes: ['warn', 'single', { avoidEscape: true }],
+    '@typescript-eslint/no-unsafe-member-access': 'off',
+    '@typescript-eslint/no-unsafe-call': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@ts-ignore': 'off',
+    '@typescript-eslint/no-unsafe-return': 'off',
+    '@typescript-eslint/restrict-template-expressions': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/restrict-plus-operands': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
 
     // allow debugger during development only
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'

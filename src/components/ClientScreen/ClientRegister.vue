@@ -3,7 +3,7 @@
     <div class="col-md-6">
       <q-card>
         <q-card-section>
-          <div class="text-h5 text-primary" align="center">
+          <div class="text-h5 text-primary text-center">
             Cadastrar Cliente
           </div>
         </q-card-section>
@@ -12,7 +12,7 @@
             <q-card-section>
               <ClientManagement :editItem="editItem"></ClientManagement>
             </q-card-section>
-            <div class="" align="right">
+            <div class="text-right">
               <q-btn
                 @click="cancelAdd"
                 class="q-ma-md"
@@ -33,89 +33,90 @@
 </template>
 
 <script>
-import ClientManagement from "./clientManagement.vue";
-import { defineComponent } from "@vue/composition-api";
+import ClientManagement from './clientManagement.vue'
+import { defineComponent } from '@vue/composition-api'
 
 const defaultItem = {
-  name: "",
-  email: "",
-  cnpj: "",
-  empresa: "",
-  departamento: "",
-  telefone: ""
-};
+  name: '',
+  email: '',
+  cnpj: '',
+  empresa: '',
+  departamento: '',
+  telefone: ''
+}
 
 export default defineComponent({
-  name: "ClientRegister",
+  name: 'ClientRegister',
   components: { ClientManagement },
-  data() {
+  data () {
     return {
       editItem: defaultItem,
       prompt: false
-    };
+    }
   },
 
   methods: {
-    onSubmit() {
-      this.$swal({
-        title: "Cadastrar Cliente ?",
-        icon: "warning",
+    onSubmit () {
+      void this.$swal({
+        title: 'Cadastrar Cliente ?',
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: "Cadastrar",
-        cancelButtonText: "Cancelar",
+        confirmButtonText: 'Cadastrar',
+        cancelButtonText: 'Cancelar',
         showLoaderOnConfirm: true
       }).then(result => {
         if (result.isConfirmed) {
           this.$axios
-            .post("clients", this.editItem)
+            .post('clients', this.editItem)
             .then(response => {
-              this.$swal({
+              void this.$swal({
                 title: response.data.Message,
-                icon: "success",
+                icon: 'success',
                 showConfirmButton: true
-              });
-              this.resetForm();
-              this.$emit("showCreate", false);
+              })
+              this.resetForm()
+              this.$emit('showCreate', false)
             })
+            // eslint-disable-next-line handle-callback-err
             .catch(error => {
-              this.$swal({
-                title: "Erro ao cadastrar !",
-                text: "Entre em contato com o suporte",
-                icon: "error",
+              void this.$swal({
+                title: 'Erro ao cadastrar !',
+                text: 'Entre em contato com o suporte',
+                icon: 'error',
                 showConfirmButton: true
-              });
-            });
+              })
+            })
         }
-      });
+      })
     },
 
-    cancelAdd() {
-      this.$swal({
-        title: "Cancelar cadastro ?",
-        icon: "warning",
+    cancelAdd () {
+      void this.$swal({
+        title: 'Cancelar cadastro ?',
+        icon: 'warning',
         showCancelButton: true,
-        cancelButtonText: "Voltar",
-        confirmButtonText: "Cancelar"
+        cancelButtonText: 'Voltar',
+        confirmButtonText: 'Cancelar'
       }).then(result => {
         if (result.isConfirmed) {
-          this.resetForm();
-          this.$emit("showCreate", false);
+          this.resetForm()
+          this.$emit('showCreate', false)
         }
-      });
+      })
     },
 
-    resetForm() {
-      defaultItem.name = "";
-      defaultItem.email = "";
-      defaultItem.cnpj = "";
-      defaultItem.company = "";
-      defaultItem.department = "";
-      defaultItem.phone = "";
+    resetForm () {
+      defaultItem.name = ''
+      defaultItem.email = ''
+      defaultItem.cnpj = ''
+      defaultItem.company = ''
+      defaultItem.department = ''
+      defaultItem.phone = ''
     },
 
-    hide() {
-      this.prompt = false;
+    hide () {
+      this.prompt = false
     }
   }
-});
+})
 </script>
