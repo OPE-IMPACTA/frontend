@@ -5,7 +5,7 @@
         <q-input
           outlined
           v-model="newEditItem.name"
-          label="Nome completo"
+          label="Nome do projeto"
           type="text"
           color="orange"
           :rules="emptyField('Nome obrigatório')"/>
@@ -28,8 +28,9 @@
         <q-select
           outlined
           v-model="newEditItem.client"
-          :options="clients"
           label="Clientes"
+          color="orange"
+          :options="clients"
           :rules="emptyField('Usuário obrigatório')"
         />
       </q-item-section>
@@ -39,8 +40,9 @@
         <q-input
           outlined
           v-model="newEditItem.description"
-          type="textarea"
           label="Descrição"
+          type="textarea"
+          color="orange"
           :rules="emptyField('Descrição obrigatório')"
         />
       </q-item-section>
@@ -49,7 +51,7 @@
 </template>
 
 <script>
-import { emptyField, emptyFieldAndLength } from 'src/utils/rules-fields'
+import { emptyField } from 'src/utils/rules-fields'
 import services from 'src/services'
 import { clearLocalStorage } from 'src/utils/local-storage'
 
@@ -63,8 +65,7 @@ export default {
       newEditItem: this.editItem,
       users: [],
       clients: [],
-      emptyField,
-      emptyFieldAndLength
+      emptyField
     }
   },
   mounted () {
@@ -127,7 +128,7 @@ export default {
           })
         })
       } catch (error) {
-        this.$toast.error('Ocorreu um erro ao buscar os clientes', {
+        this.$toast.error('Ocorreu um erro ao buscar os usuários', {
           timeout: 2000
         })
       }

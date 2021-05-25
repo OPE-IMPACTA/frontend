@@ -6,14 +6,14 @@
           <div
             class="text-h4 text-orange text-center q-pt-lg"
           >
-            Cadastrar cliente
+            Cadastrar tarefa
           </div>
         </q-card-section>
         <q-list>
           <q-form
             @submit="handleSubmit"
             class="form"
-            ref="clientCreateForm"
+            ref="taskCreateForm"
           >
             <q-card-section>
               <task-management

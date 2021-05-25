@@ -295,7 +295,7 @@ export default {
     },
     async handleGetDelete (item) {
       const response = await warning(
-        'Deletar task',
+        'Deletar tarefa',
         'Tem certeza que deseja deletar a tarefa?',
         'Deletar'
       )

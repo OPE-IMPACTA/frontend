@@ -127,7 +127,7 @@ export default {
         {
           name: 'cnpj',
           align: 'left',
-          label: 'Cnpj',
+          label: 'CNPJ',
           field: 'cnpj',
           sortable: true
         },
@@ -141,14 +141,14 @@ export default {
         {
           name: 'department',
           align: 'left',
-          label: 'Departmento',
+          label: 'Departamento',
           field: 'department',
           sortable: true
         },
         {
           name: 'phone',
           align: 'left',
-          label: 'Phone',
+          label: 'Telefone',
           field: 'phone',
           sortable: true
         },

@@ -91,21 +91,24 @@
           </q-input>
         </div>
       </q-item-section>
-    </q-item>
-    <q-item items-center>
       <q-item-section>
-        <q-item-section>
-          <q-input
-            outlined
-            color="orange"
-            v-model="newEditItem.hours"
-            type="number"
-            label="Horas"
-            :rules="emptyField('Horas obrigatória')"
-          />
-        </q-item-section>
+        <q-item items-center>
+          <q-item-section>
+            <q-item-section>
+              <q-input
+                outlined
+                color="orange"
+                v-model="newEditItem.hours"
+                type="number"
+                label="Horas"
+                :rules="emptyField('Horas obrigatória')"
+              />
+            </q-item-section>
+          </q-item-section>
+        </q-item>
       </q-item-section>
     </q-item>
+
     <q-item items-center>
       <q-item-section>
         <q-input
@@ -114,7 +117,7 @@
           color="orange"
           type="textarea"
           label="Descrição"
-          :rules="emptyField('Horas obrigatória')"
+          :rules="emptyField('Descrição obrigatória')"
         />
       </q-item-section>
     </q-item>

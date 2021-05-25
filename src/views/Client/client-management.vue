@@ -29,7 +29,7 @@
           v-model="newEditItem.cnpj"
           label="Cnpj"
           type="text"
-          lazy-rules=""
+          color="orange"
           :rules="emptyFieldAndLength('CNPJ inválido', 17)"
           :mask="'##.###.###/####-##'"
         />
@@ -42,7 +42,7 @@
           v-model="newEditItem.company"
           label="Empresa"
           type="text"
-          lazy-rules=""
+          color="orange"
           :rules="emptyField('Empresa obrigatório')"
         />
       </q-item-section>
@@ -54,7 +54,7 @@
           v-model="newEditItem.department"
           label="Departamento"
           type="text"
-          lazy-rules=""
+          color="orange"
           :rules="emptyField('Departamento obrigatório')"
         />
       </q-item-section>
@@ -66,7 +66,7 @@
           v-model="newEditItem.phone"
           label="Telefone"
           type="text"
-          lazy-rules=""
+          color="orange"
           :rules="emptyFieldAndLength('Telefone inválido', 15)"
           :mask="'(##) #####-####'"
         />
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { emptyField, email, password, emptyFieldAndLength } from 'src/utils/rules-fields'
+import { emptyField, email, emptyFieldAndLength } from 'src/utils/rules-fields'
 
 export default {
   name: 'ClientManagement',
@@ -88,7 +88,6 @@ export default {
       newEditItem: this.editItem,
       emptyField,
       email,
-      password,
       emptyFieldAndLength
     }
   }
