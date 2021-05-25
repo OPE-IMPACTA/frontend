@@ -5,10 +5,35 @@
     </transition>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+<script>
 
-export default defineComponent({
-  name: 'App'
-})
+export default {
+  computed: {
+    namePath () {
+      return this.$route.name
+    }
+  },
+  watch: {
+    namePath (val) {
+      const token = window.localStorage.getItem('token')
+      if (val === 'Login' && token) {
+        this.$router.push({ name: 'Home' })
+        return
+      }
+      if (this.$route.meta.hasAuth) {
+        if (!token) {
+          this.$router.push({ name: 'Login' })
+        }
+      }
+    }
+  }
+}
 </script>
+
+<style lang="scss">
+
+p {
+  font-family: cursive;
+}
+
+</style>
