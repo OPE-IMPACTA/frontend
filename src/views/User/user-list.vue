@@ -182,8 +182,6 @@ export default {
       const filter = props.filter
       this.loading = true
 
-      console.log('tseesss', filter)
-
       setTimeout(async () => {
         this.pagination.rowsNumber = this.getRowsNumberCount(filter)
 
@@ -251,7 +249,6 @@ export default {
     },
     getRowsNumberCount (filter) {
       let count = 0
-      console.log(this.data)
 
       this.data.forEach(treat => {
         if (treat.name.includes(filter)) {
