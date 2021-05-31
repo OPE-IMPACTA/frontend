@@ -1,12 +1,12 @@
 <template>
   <q-page>
-    <div class="column items-center justify-center bg-grey-3">
-      <h3 class="text-weight-regular q-mt-xl q-mb-sm">
+    <div class="column items-center justify-center bg-blue-grey-1">
+      <div class="text-h4 text-weight-regular q-mt-xl">
         Projetos
-      </h3>
-      <h6 class="text-weight-light q-mb-xl q-mt-sm">
+      </div>
+      <div class="text-h6 text-weight-light q-mb-xl q-mt-sm">
         Detalhes de todos os projetos
-      </h6>
+      </div>
     </div>
     <div>
       <div class="row">
@@ -38,9 +38,14 @@
           >
             Ainda nenhum feedback recebido 🥺
           </p>
-          <div>
-            <project-card class="project-card" :project="projects" />
-          </div>
+          <project-card-loading
+            v-if="isLoading"
+            class="project-card"
+          />
+          <project-card
+            v-else
+            class="project-card"
+            :project="projects" />
         </div>
       </div>
     </div>
@@ -51,6 +56,7 @@
 import Filters from './Filters'
 import FiltersLoading from './FiltersLoading'
 import ProjectCard from '../../components/ProjectCard'
+import ProjectCardLoading from '../../components/ProjectCard/ProjectCardLoading'
 import services from '../../services'
 import sleep from '../../utils/sleep'
 
@@ -68,7 +74,7 @@ export default {
       hasError: false
     }
   },
-  components: { Filters, FiltersLoading, ProjectCard },
+  components: { Filters, FiltersLoading, ProjectCard, ProjectCardLoading },
   methods: {
     async changeProjectsType (type) {
       try {
