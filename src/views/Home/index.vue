@@ -25,8 +25,22 @@
           />
         </div>
 
-        <div class=" col-8 bg-primary">
-          <project-card class="project-card" :project="projects" />
+        <div class="col-8">
+          <p
+            v-if="hasError"
+            class="text-h6 text-center q-mt-xl"
+          >
+            Aconteceu um erro ao carregar os projetos 🥺
+          </p>
+          <p
+            v-if="this.projects.length && this.isLoading && !this.hasError"
+            class="text-h6 text-center q-mt-xl"
+          >
+            Ainda nenhum feedback recebido 🥺
+          </p>
+          <div>
+            <project-card class="project-card" :project="projects" />
+          </div>
         </div>
       </div>
     </div>
@@ -63,9 +77,9 @@ export default {
         this.pagination.limit = 5
         this.type = type
         const { data } = await services.project.getProjects()
-        this.projects = data.data
+        await sleep(1000)
 
-        await sleep(2000)
+        this.projects = data.data
         this.isLoading = false
       } catch (error) {
         this.handleError(error)
@@ -76,9 +90,9 @@ export default {
       try {
         this.isLoading = true
         const { data } = await services.project.getProjects()
-        this.projects = data.data
+        await sleep(1000)
 
-        await sleep(2000)
+        this.projects = data.data
         this.isLoading = false
       } catch (error) {
         this.handleError(error)
