@@ -35,7 +35,7 @@
     >
       <menu-lateral/>
     </q-drawer>
-    <q-page-container class="q-ml-xl">
+    <q-page-container>
       <router-view/>
     </q-page-container>
   </q-layout>
