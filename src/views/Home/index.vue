@@ -59,6 +59,7 @@ import ProjectCard from '../../components/ProjectCard'
 import ProjectCardLoading from '../../components/ProjectCard/ProjectCardLoading'
 import services from '../../services'
 import sleep from '../../utils/sleep'
+import { clearLocalStorage } from 'src/utils/local-storage'
 
 export default {
   data () {
@@ -95,11 +96,19 @@ export default {
     async fetchProjects () {
       try {
         this.isLoading = true
-        const { data } = await services.project.getProjects()
-        await sleep(1000)
+        const { data, errors } = await services.project.getProjects()
 
-        this.projects = data.data
-        this.isLoading = false
+        if (!errors) {
+          await sleep(1000)
+          this.projects = data.data
+          this.isLoading = false
+          return
+        }
+
+        if (errors.status === 401) {
+          clearLocalStorage()
+          await this.$router.push({ name: 'Login' })
+        }
       } catch (error) {
         this.handleError(error)
       }
