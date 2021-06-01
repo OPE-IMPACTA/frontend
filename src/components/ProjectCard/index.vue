@@ -2,13 +2,12 @@
   <div class="q-pa-md" style="max-width: 600px">
     <q-list>
       <q-expansion-item
-        v-for="project in this.project"
+        v-for="project in project"
         :key="project._id"
         :label="`${project.name}`"
         :caption="`${STATUS[project.status].label}`"
         :icon="`${STATUS[project.status].icon}`"
         class="q-mb-xl shadow-up-3 text-h6"
-        :class="`${STATUS[project.status].text}-8`"
       >
         <q-card>
           <q-card-section class="card-section">
