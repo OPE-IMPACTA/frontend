@@ -5,9 +5,10 @@
         v-for="project in this.project"
         :key="project._id"
         :label="`${project.name}`"
-        :caption="`${project.status}`"
-        icon="content_paste"
-        class="q-mb-xl shadow-up-3 bg-blue-grey-1 text-blue text-h6"
+        :caption="`${STATUS[project.status].label}`"
+        :icon="`${STATUS[project.status].icon}`"
+        class="q-mb-xl shadow-up-3 text-h6"
+        :class="`${STATUS[project.status].text}-8`"
       >
         <q-card>
           <q-card-section class="card-section">
@@ -39,9 +40,17 @@
 </template>
 
 <script>
+
+import { STATUS } from 'src/utils/constant'
+
 export default {
   props: {
     project: Array
+  },
+  data () {
+    return {
+      STATUS
+    }
   }
 }
 </script>

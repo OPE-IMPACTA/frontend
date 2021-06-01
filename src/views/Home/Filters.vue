@@ -25,28 +25,15 @@
 
 <script>
 
+import services from '../../services'
+import { STATUS } from 'src/utils/constant'
+
 const SUMMARY = {
-  all: 20,
-  new: 5,
-  progress: 4,
-  completed: 7,
-  canceled: 4
-}
-
-const LABELS = {
-  all: 'Todos',
-  new: 'Novo',
-  progress: 'Em andamento',
-  completed: 'Finalizado',
-  canceled: 'Cancelado'
-}
-
-const COLORS = {
-  all: { text: 'text-grey', bg: 'bg-grey' },
-  new: { text: 'text-blue', bg: 'bg-blue' },
-  progress: { text: 'text-orange', bg: 'bg-orange' },
-  completed: { text: 'text-green', bg: 'bg-green' },
-  canceled: { text: 'text-red', bg: 'bg-red' }
+  all: 0,
+  new: 0,
+  progress: 0,
+  completed: 0,
+  canceled: 0
 }
 
 export default {
@@ -55,6 +42,7 @@ export default {
     return {
       link: 'inbox',
       summary: SUMMARY,
+      summary2: {},
       hasError: false,
       filters: [
         { label: null, amount: null }
@@ -65,8 +53,8 @@ export default {
     applyFiltersStructure (summary) {
       return Object.keys(summary).reduce((acc, cur) => {
         const currentFilter = {
-          label: LABELS[cur],
-          color: COLORS[cur],
+          label: STATUS[cur].label,
+          color: STATUS[cur],
           amount: summary[cur]
         }
 
@@ -87,12 +75,14 @@ export default {
       }
     }
   },
-  created () {
+  async created () {
     try {
-      this.filters = this.applyFiltersStructure(SUMMARY)
+      this.filters = this.applyFiltersStructure(this.summary)
+      const { data } = await services.project.getSummary()
+      this.filters = this.applyFiltersStructure(data.data)
     } catch (error) {
       this.hasError = !!error
-      this.filters = this.applyFiltersStructure(SUMMARY)
+      this.filters = this.applyFiltersStructure(this.summary)
     }
   }
 }

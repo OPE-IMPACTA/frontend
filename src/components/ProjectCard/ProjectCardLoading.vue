@@ -71,9 +71,6 @@ export default {
     return {
       ITEMS: [1, 2, 3]
     }
-  },
-  created () {
-    console.log(this.project)
   }
 }
 </script>

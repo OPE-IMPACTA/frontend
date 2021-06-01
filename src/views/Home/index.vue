@@ -45,7 +45,8 @@
           <project-card
             v-else
             class="project-card"
-            :project="projects" />
+            :project="projects"
+          />
         </div>
       </div>
     </div>
@@ -67,6 +68,7 @@ export default {
       type: '',
       projects: [],
       isLoading: false,
+      isLoadingMoreProjects: false,
       pagination: {
         limit: 5,
         offset: 0,
@@ -83,7 +85,11 @@ export default {
         this.pagination.offset = 0
         this.pagination.limit = 5
         this.type = type
-        const { data } = await services.project.getProjects()
+
+        const { data } = await services.project.getAll({
+          type
+          // ...this.pagination
+        })
         await sleep(1000)
 
         this.projects = data.data
@@ -92,11 +98,13 @@ export default {
         this.handleError(error)
       }
     },
-
     async fetchProjects () {
       try {
         this.isLoading = true
-        const { data, errors } = await services.project.getProjects()
+        const { data, errors } = await services.project.getAll({
+          // ...this.pagination,
+          type: this.type
+        })
 
         if (!errors) {
           await sleep(1000)
