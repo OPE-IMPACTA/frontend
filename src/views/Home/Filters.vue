@@ -12,11 +12,11 @@
         active-class="my-menu-link"
       >
         <q-item-section avatar>
-          <q-badge rounded />
+          <q-badge rounded :class="filter.color.bg"/>
         </q-item-section>
-        <q-item-section >{{ filter.label }}</q-item-section>
+        <q-item-section :class="filter.color.text">{{ filter.label }}</q-item-section>
         <q-item-section avatar>
-          <q-item-label > {{ filter.amount }} </q-item-label>
+          <q-item-label :class="filter.color.text"> {{ filter.amount }} </q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
