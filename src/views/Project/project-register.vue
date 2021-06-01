@@ -73,7 +73,7 @@ export default {
             description: this.editItem.description,
             client_id: this.editItem.client.value,
             user_id: this.editItem.user.value,
-            status: 'Novo'
+            status: 'new'
           }
         })
 
