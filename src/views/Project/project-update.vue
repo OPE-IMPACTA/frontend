@@ -114,7 +114,8 @@ export default {
           name,
           description,
           user_id: this.editItem.user.value || this.editItem.user_id,
-          client_id: this.editItem.client.value || this.editItem.client_id
+          client_id: this.editItem.client.value || this.editItem.client_id,
+          status: this.editItem.status.value
         }
       })
     },

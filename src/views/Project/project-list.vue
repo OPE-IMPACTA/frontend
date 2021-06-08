@@ -54,6 +54,18 @@
             />
           </template>
 
+          <template #body-cell-status="props">
+            <q-td class="text-center">
+              <div class="q-gutter-sm">
+                <q-item
+                  :class="STATUS[props.row.status].text"
+                >
+                  {{STATUS[props.row.status].label}}
+                </q-item>
+              </div>
+            </q-td>
+          </template>
+
           <template #body-cell-action="props">
             <q-td class="text-center">
               <div class="q-gutter-sm">
@@ -92,6 +104,7 @@ import { exportFile } from 'quasar'
 import { clearLocalStorage } from 'src/utils/local-storage'
 import sleep from 'src/utils/sleep'
 import { warning } from 'src/utils/sweet-alert'
+import { STATUS } from 'src/utils/constant'
 
 const defaultItem = {
   client: '',
@@ -113,6 +126,7 @@ export default {
       loading: false,
       show_form: false,
       editedItem: defaultItem,
+      STATUS,
       columns: [
         {
           name: 'name',
@@ -142,6 +156,13 @@ export default {
           align: 'left',
           label: 'Descrição',
           field: 'description',
+          sortable: true
+        },
+        {
+          name: 'status',
+          align: 'left',
+          label: 'Status',
+          field: 'status',
           sortable: true
         },
         {

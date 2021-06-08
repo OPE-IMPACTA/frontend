@@ -8,7 +8,8 @@
           label="Nome completo"
           type="text"
           color="orange"
-          :rules="emptyField('Nome obrigatório')"/>
+          :rules="emptyField('Nome obrigatório')"
+        />
       </q-item-section>
     </q-item>
     <q-item items-center v-if="visibilityFields">

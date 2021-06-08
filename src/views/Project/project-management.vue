@@ -35,6 +35,18 @@
         />
       </q-item-section>
     </q-item>
+    <q-item v-if="newEditItem.status">
+      <q-item-section>
+        <q-select
+          outlined
+          v-model="newEditItem.status"
+          label="Status"
+          color="orange"
+          :options="status"
+          :rules="emptyField('Usuário obrigatório')"
+        />
+      </q-item-section>
+    </q-item>
     <q-item>
       <q-item-section>
         <q-input
@@ -54,6 +66,7 @@
 import { emptyField } from 'src/utils/rules-fields'
 import services from 'src/services'
 import { clearLocalStorage } from 'src/utils/local-storage'
+import { STATUS } from 'src/utils/constant'
 
 export default {
   name: 'ClientManagement',
@@ -65,10 +78,17 @@ export default {
       newEditItem: this.editItem,
       users: [],
       clients: [],
+      status: [
+        { value: 'new', label: 'Novo' },
+        { value: 'progress', label: 'Em andamento' },
+        { value: 'completed', label: 'Finalizado' },
+        { value: 'canceled', label: 'Cancelado' }
+      ],
       emptyField
     }
   },
   mounted () {
+    this.newEditItem.status = STATUS[this.editItem.status].label
     this.getClients()
     this.getUsers()
   },
