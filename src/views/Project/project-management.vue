@@ -88,7 +88,7 @@ export default {
     }
   },
   mounted () {
-    this.newEditItem.status = STATUS[this.editItem.status].label
+    this.newEditItem.status = this.newEditItem.status ? STATUS[this.editItem.status].label : ''
     this.getClients()
     this.getUsers()
   },
