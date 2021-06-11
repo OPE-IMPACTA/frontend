@@ -2,7 +2,7 @@
   <q-scroll-area class="fit">
     <q-list padding>
       <q-item
-        to="Home"
+        to="/home"
         exact
         clickable
         v-ripple
@@ -21,6 +21,7 @@
       </q-item>
 
       <q-item
+        v-if="group === 'admin'"
         to="/user"
         exact
         clickable
@@ -124,10 +125,35 @@ export default {
   name: 'MenuLateral',
   data () {
     return {
-      link: 'inbox'
+      link: 'inbox',
+      group: ''
     }
   },
   methods: {
+    async getAllGroups () {
+      try {
+        const {
+          data,
+          errors
+        } = await services.group.getAll()
+
+        if (!errors) {
+          return data
+        }
+
+        if (errors.status === 401) {
+          this.$toast.error('Token inválido!', {
+            timeout: 2000
+          })
+          clearLocalStorage()
+          await this.$router.push({ name: 'Login' })
+        }
+      } catch (error) {
+        this.$toast.error('Ocorreu um erro ao realizar o login', {
+          timeout: 2000
+        })
+      }
+    },
     async handleLogout () {
       try {
         await services.user.logout()
@@ -138,6 +164,19 @@ export default {
         await this.$router.push({ name: 'Login' })
       }
     }
+  },
+  showPassword (visibility) {
+    this[visibility] = 'text'
+  },
+  hidePassword (visibility) {
+    this[visibility] = 'password'
+  },
+  async mounted () {
+    const groups = await this.getAllGroups()
+    const user = window.localStorage.getItem('user')
+    const groupID = user ? JSON.parse(user).group_id : ''
+    const result = groups.find(({ _id: id }) => id === groupID)
+    this.group = result.group
   }
 }
 </script>

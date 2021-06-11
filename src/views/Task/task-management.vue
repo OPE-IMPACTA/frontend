@@ -32,7 +32,6 @@
             placeholder="Data início"
             v-model="newEditItem.startDate"
             color="orange"
-            mask="date"
             :rules="emptyField('Data de início obrigatória')"
           >
             <template v-slot:append>
@@ -65,7 +64,6 @@
             placeholder="Data Final"
             v-model="newEditItem.endDate"
             color="orange"
-            mask="date"
             :rules="emptyField('Data final obrigatória')"
           >
             <template v-slot:append>

@@ -22,7 +22,8 @@
     "v-mask": "^2.2.4",
     "vue": "^2.6.12",
     "vue-sweetalert2": "^4.2.0",
-    "vue-toastification": "^1.7.11"
+    "vue-toastification": "^1.7.11",
+    "vuedraggable": "^2.24.3"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",

@@ -13,6 +13,17 @@ Vue.use(Toast)
 Vue.use(VueSweetalert2)
 Vue.use(VueRouter)
 
+Vue.filter('formatDate', (valor) => {
+  const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }
+  const date = new Date(valor)
+  const dateTimeFormat = new Intl.DateTimeFormat('pt-br', options)
+  return dateTimeFormat.format(date)
+})
+
 /*
  * If not building with SSR mode, you can
  * directly export the Router instantiation;

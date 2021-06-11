@@ -7,7 +7,7 @@
         :label="`${project.name}`"
         :caption="`${STATUS[project.status].label}`"
         :icon="`${STATUS[project.status].icon}`"
-        class="q-mb-xl shadow-up-3 text-h6"
+        class="q-mb-xl shadow-2 text-h6"
         :class="`${STATUS[project.status].text}-8`"
       >
         <q-card>
@@ -28,10 +28,19 @@
             <div class="text-subtitle2 text-blue-grey-10 text-weight-light">{{ project.description }}</div>
           </q-card-section>
         </q-card>
-        <q-card>
+        <q-card v-if="project.task">
           <q-card-section class="card-section">
             <div class="text-subtitle1 text-blue-grey-10 text-weight-bold">Tarefas</div>
-            <div class="text-subtitle2 text-blue-grey-10 text-weight-light">Aqui são todas as tarefas</div>
+            <div class="bg-grey-2 shadow-1">
+              <div class="q-ml-sm q-mt-sm text-subtitle1 text-primary text-weight-light">Descrição</div>
+              <div class="q-ml-sm text-subtitle2 text-blue-grey-10 text-weight-light">{{ project.task.description }}</div>
+              <div class="q-ml-sm text-subtitle1 text-primary text-weight-light">Data inicio</div>
+              <div class="q-ml-sm text-subtitle2 text-blue-grey-10 text-weight-light">{{ project.task.startDate | formatDate }}</div>
+              <div class="q-ml-sm text-subtitle1 text-primary text-weight-light">Data final</div>
+              <div class="q-ml-sm text-subtitle2 text-blue-grey-10 text-weight-light">{{ project.task.endDate | formatDate }}</div>
+              <div class="q-ml-sm text-subtitle1 text-primary text-weight-light">Horas</div>
+              <div class="q-ml-sm text-subtitle2 text-blue-grey-10 text-weight-light">{{ project.task.hours }} horas</div>
+            </div>
           </q-card-section>
         </q-card>
       </q-expansion-item>
